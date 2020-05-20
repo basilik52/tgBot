@@ -112,29 +112,28 @@ def lalala(message):
                     host='ec2-54-86-170-8.compute-1.amazonaws.com',
                     user='xblukmphspyoak',
                     password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-                    dbname='d2iaoufpucitsq',
-                    cursor_factory=DictCursor)) as connection:
+                    dbname='d2iaoufpucitsq')) as connection:
 
                 with connection.cursor() as cursor:
                     id_telegram = message.from_user.id
                     check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
                     cursor.execute(check_user, [int(id_telegram)])
                     for user_id in cursor:
-                        id_user = user_id['id']
-                    date_delete = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        id_user = user_id[0]
+                    date_delete = datetime.now()
 
                     print(id_user, date_delete)
                     query = '''SELECT max(id) from amounts where user_id = %s '''
                     cursor.execute(query, [int(id_user)])
                     for max_id in cursor:
-                        id_max = max_id['id']
-                        print(max_id)
+                        id_max = max_id[0]
+                        print(max_id[0])
                     print(max_id)
                     query = '''SELECT deleted_at from amounts where user_id = %s and id = (select max(id) from amounts where user_id = %s)'''
                     cursor.execute(query, (int(id_user), int(id_user)))
 
                     for d_l in cursor:
-                        del_last = d_l['deleted_at']
+                        del_last = d_l[0]
                         print(del_last)
                     try:
                         if del_last is None:
@@ -160,7 +159,7 @@ def lalala(message):
                         query = '''SELECT message from messages where checked is null and deleted_at is null'''
                         cursor.execute(query)
                         for m_c in cursor:
-                            msg_chck = m_c['message']
+                            msg_chck = m_c[0]
                             bot.send_message(message.chat.id, '- {}\n'.format(msg_chck), parse_mode='html')
                     else:
                         mag = bot.send_message(message.chat.id,
@@ -182,12 +181,12 @@ def get_message(message):
         with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
-            cursor.execute(check_user, int(id_telegram))
+            cursor.execute(check_user, [int(id_telegram)])
             for user_id in cursor:
-                id_user = user_id['id']
+                id_user = user_id[0]
             message_review = message.text
 
-            date_start = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            date_start = datetime.now()
 
             print(id_user, message_review, date_start)
             try:
@@ -215,13 +214,10 @@ def get_amount(message):
                 # cursor.execute(categoryId, str(call.data))
                 global amount
                 id_telegram = message.from_user.id
-                print('id_telegram'.format(message.from_user.id))
                 check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
                 cursor.execute(check_user, [int(id_telegram)])
                 for user_id in cursor:
-                    id_user = user_id['id']
-                print(id_user)
-                print('message.text'.format(message.text))
+                    id_user = user_id[0]
                 amount = int(message.text)
 
                 date_start = datetime.now()
@@ -256,42 +252,42 @@ def callback_inline(call):
                 if call.message:
                     id_telegram = call.from_user.id
                     check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
-                    cursor.execute(check_user, int(id_telegram))
+                    cursor.execute(check_user, [int(id_telegram)])
                     for user_id in cursor:
-                        id_user = user_id['id']
+                        id_user = user_id[0]
 
                     if call.data == 'today':
                         amount_today = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and (date(created_at) = current_date) and deleted_at is null'''
-                        cursor.execute(amount_today, int(id_user))
+                        cursor.execute(amount_today, [int(id_user)])
                         for am_t in cursor:
-                            am_tod = am_t['sum(amount)']
+                            am_tod = am_t[0]
                         if am_tod is not None:
                             bot.send_message(call.message.chat.id, "Сегодня - {} руб.".format(am_tod))
                         else:
                             bot.send_message(call.message.chat.id, "Сегодня - 0 руб.")
                     elif call.data == 'week':
                         amount_week = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and (week(created_at) = week(current_date)) and (year(created_at) = year(current_date)) and deleted_at is null'''
-                        cursor.execute(amount_week, int(id_user))
+                        cursor.execute(amount_week, [int(id_user)])
                         for am_w in cursor:
-                            am_week = am_w['sum(amount)']
+                            am_week = am_w[0]
                         if am_week is not None:
                             bot.send_message(call.message.chat.id, "За неделю - {} руб.".format(am_week))
                         else:
                             bot.send_message(call.message.chat.id, "За неделю - 0 руб.")
                     elif call.data == 'month':
                         amount_month = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and (month(created_at) = month(current_date)) and (year(created_at) = year(current_date)) and deleted_at is null'''
-                        cursor.execute(amount_month, int(id_user))
+                        cursor.execute(amount_month, [int(id_user)])
                         for am_m in cursor:
-                            am_month = am_m['sum(amount)']
+                            am_month = am_m[0]
                         if am_month is not None:
                             bot.send_message(call.message.chat.id, "За месяц - {} руб.".format(am_month))
                         else:
                             bot.send_message(call.message.chat.id, "За месяц - 0 руб.")
                     elif call.data == 'quarter':
                         amount_quarter = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and (QUARTER(created_at) = QUARTER(current_date)) and (year(created_at) = year(current_date)) and deleted_at is null'''
-                        cursor.execute(amount_quarter, int(id_user))
+                        cursor.execute(amount_quarter, [int(id_user)])
                         for am_q in cursor:
-                            am_quarter = am_q['sum(amount)']
+                            am_quarter = am_q[0]
                         if am_quarter is not None:
                             bot.send_message(call.message.chat.id, "За квартал - {} руб.".format(am_quarter))
                         else:
@@ -301,18 +297,18 @@ def callback_inline(call):
                                                  (year(created_at) = year(current_date)))
                                            or (QUARTER(current_date) >= 3 and QUARTER(created_at) >= 3 and (QUARTER(created_at) <= QUARTER(current_date)) and
                                                (year(created_at) = year(current_date)))'''
-                        cursor.execute(amount_half, int(id_user))
+                        cursor.execute(amount_half, [int(id_user)])
                         for am_h in cursor:
-                            am_half = am_h['sum(amount)']
+                            am_half = am_h[0]
                         if am_half is not None:
                             bot.send_message(call.message.chat.id, "За полгода - {} руб.".format(am_half))
                         else:
                             bot.send_message(call.message.chat.id, "За полгода - 0 руб.")
                     elif call.data == 'year':
                         amount_year = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and (year(created_at) = year(current_date)) and deleted_at is null'''
-                        cursor.execute(amount_year, int(id_user))
+                        cursor.execute(amount_year, [int(id_user)])
                         for am_y in cursor:
-                            am_year = am_y['sum(amount)']
+                            am_year = am_y[0]
                         if am_year is not None:
                             bot.send_message(call.message.chat.id, "За год - {} руб.".format(am_year))
                         else:
