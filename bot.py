@@ -106,6 +106,8 @@ def lalala(message):
                         query2 = '''DELETE FROM amounts WHERE deleted_at is not null'''
                         cursor.execute(query2)
                         bot.send_message(message.chat.id, 'Все записи с <b>deleted_at is not null</b> удалены.', parse_mode='html')
+                    else:
+                        bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
                 connection.commit()
         elif message.text == u'Статистика трат':
 
