@@ -2,6 +2,8 @@
 import datetime
 import psycopg2
 import telebot
+from psycopg2.extras import DictCursor
+
 import config
 
 from telebot import types
@@ -110,7 +112,8 @@ def lalala(message):
                     host='ec2-54-86-170-8.compute-1.amazonaws.com',
                     user='xblukmphspyoak',
                     password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-                    dbname='d2iaoufpucitsq')) as connection:
+                    dbname='d2iaoufpucitsq',
+                    cursor_factory=DictCursor)) as connection:
 
                 with connection.cursor(cursor_factory='DictCursor') as cursor:
                     id_telegram = message.from_user.id
