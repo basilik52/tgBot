@@ -92,7 +92,21 @@ def lalala(message):
             mag = bot.send_message(message.chat.id, 'Введите сумму <b>без</b> копеек:', parse_mode='html')
             bot.register_next_step_handler(mag, get_amount)
 
-
+        elif message.text == u'delete':
+            with closing(psycopg2.connect(
+                    host='ec2-54-86-170-8.compute-1.amazonaws.com',
+                    user='xblukmphspyoak',
+                    password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
+                    dbname='d2iaoufpucitsq')) as connection:
+                with connection.cursor() as cursor:
+                    id_telegram = message.from_user.id
+                    if id_telegram == 1017018910:
+                        query1 = '''DELETE FROM messages WHERE deleted_at is not null'''
+                        cursor.execute(query1)
+                        query2 = '''DELETE FROM amounts WHERE deleted_at is not null'''
+                        cursor.execute(query2)
+                        bot.send_message(message.chat.id, 'Все записи с <b>deleted_at is not null</b> удалены.', parse_mode='html')
+                connection.commit()
         elif message.text == u'Статистика трат':
 
             markup = types.InlineKeyboardMarkup(row_width=3)
@@ -158,6 +172,8 @@ def lalala(message):
                     if id_telegram == 1017018910:
                         query1 = '''DELETE FROM messages WHERE deleted_at is not null'''
                         cursor.execute(query1)
+                        query2 = '''DELETE FROM amounts WHERE deleted_at is not null'''
+                        cursor.execute(query2)
                         query = '''SELECT message from messages where checked is null and deleted_at is null'''
                         cursor.execute(query)
                         for m_c in cursor:
