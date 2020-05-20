@@ -211,13 +211,13 @@ def get_amount(message):
                 # cursor.execute(categoryId, str(call.data))
                 global amount
                 id_telegram = message.from_user.id
-                print('id_telegram'.format(id_telegram))
+                print('id_telegram'.format(message.from_user.id))
                 check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
                 cursor.execute(check_user, int(id_telegram))
                 for user_id in cursor:
                     id_user = user_id['id']
-                    print('id_user'.format(id_user))
-                    print('message.text'.format(message.text))
+                print(id_user)
+                print('message.text'.format(message.text))
                 amount = int(message.text)
 
                 date_start = datetime.now()
