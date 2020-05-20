@@ -69,21 +69,100 @@ def delete(message):
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
                 bot.send_message(message.chat.id, '1 - /messages_delete\n2 - /amounts_delete')
-                if message.text == "/messages_delete":
-                    query1 = '''DELETE FROM messages WHERE deleted_at is not null'''
-                    cursor.execute(query1)
-                    bot.send_message(message.chat.id, 'messages с <b>deleted_at is not null</b> удалены.',
-                                     parse_mode='html')
-                elif message.text == "/amounts_delete":
-                    query2 = '''DELETE FROM amounts WHERE deleted_at is not null'''
-                    cursor.execute(query2)
-                    bot.send_message(message.chat.id, 'amounts с <b>deleted_at is not null</b> удалены.',
-                                     parse_mode='html')
-                else:
-                    bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
         connection.commit()
+
+@bot.message_handler(commands=["messages_delete"])
+def messages_delete(message):
+    with closing(psycopg2.connect(
+            host='ec2-54-86-170-8.compute-1.amazonaws.com',
+            user='xblukmphspyoak',
+            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
+            dbname='d2iaoufpucitsq')) as connection:
+        with connection.cursor() as cursor:
+            id_telegram = message.from_user.id
+            if id_telegram == 1017018910:
+                    query = '''DELETE FROM messages WHERE deleted_at is not null'''
+                    cursor.execute(query)
+                    bot.send_message(message.chat.id, 'messages с <b>deleted_at is not null</b> удалены.',
+                                     parse_mode='html')
+            else:
+                bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+        connection.commit()
+
+@bot.message_handler(commands=["amounts_delete"])
+def amounts_delete(message):
+    with closing(psycopg2.connect(
+            host='ec2-54-86-170-8.compute-1.amazonaws.com',
+            user='xblukmphspyoak',
+            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
+            dbname='d2iaoufpucitsq')) as connection:
+        with connection.cursor() as cursor:
+            id_telegram = message.from_user.id
+            if id_telegram == 1017018910:
+                    query = '''DELETE FROM amounts WHERE deleted_at is not null'''
+                    cursor.execute(query)
+                    bot.send_message(message.chat.id, 'amounts с <b>deleted_at is not null</b> удалены.',
+                                     parse_mode='html')
+            else:
+                bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+        connection.commit()
+
+@bot.message_handler(commands=["user"])
+def user(message):
+            with closing(psycopg2.connect(
+                    host='ec2-54-86-170-8.compute-1.amazonaws.com',
+                    user='xblukmphspyoak',
+                    password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
+                    dbname='d2iaoufpucitsq')) as connection:
+                with connection.cursor() as cursor:
+                    id_telegram = message.from_user.id
+                    if id_telegram == 1017018910:
+                        bot.send_message(message.chat.id, '1 - /users_count\n2 - /users_username')
+                    else:
+                        bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+                connection.commit()
+
+@bot.message_handler(commands=["users_count"])
+def users_count(message):
+            with closing(psycopg2.connect(
+                    host='ec2-54-86-170-8.compute-1.amazonaws.com',
+                    user='xblukmphspyoak',
+                    password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
+                    dbname='d2iaoufpucitsq')) as connection:
+                with connection.cursor() as cursor:
+                    id_telegram = message.from_user.id
+                    if id_telegram == 1017018910:
+                            query = '''SELECT count(id) from users'''
+                            cursor.execute(query)
+                            for user_c in cursor:
+                                users_count = user_c[0]
+                            bot.send_message(message.chat.id, '<b>{}</b> - пользователей'.format(users_count),
+                                             parse_mode='html')
+                    else:
+                        bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+                connection.commit()
+
+@bot.message_handler(commands=["users_username"])
+def users_username(message):
+            with closing(psycopg2.connect(
+                    host='ec2-54-86-170-8.compute-1.amazonaws.com',
+                    user='xblukmphspyoak',
+                    password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
+                    dbname='d2iaoufpucitsq')) as connection:
+                with connection.cursor() as cursor:
+                    id_telegram = message.from_user.id
+                    if id_telegram == 1017018910:
+                            query2 = '''SELECT username from users'''
+                            cursor.execute(query2)
+                            for user_n in cursor:
+                                users_username = user_n[0]
+                            bot.send_message(message.chat.id, '@{}\n'.format(users_username),
+                                             parse_mode='html')
+                    else:
+                        bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+                connection.commit()
 
 @bot.message_handler(content_types=['text'])
 def lalala(message):
@@ -198,65 +277,7 @@ def lalala(message):
 
 
 
-# @bot.message_handler(content_types=['text'])
-# def admin(message):
-#     if message.chat.type == 'private':
-#         if message.text == "/delete":
-#             with closing(psycopg2.connect(
-#                     host='ec2-54-86-170-8.compute-1.amazonaws.com',
-#                     user='xblukmphspyoak',
-#                     password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-#                     dbname='d2iaoufpucitsq')) as connection:
-#                 with connection.cursor() as cursor:
-#                     id_telegram = message.from_user.id
-#                     if id_telegram == 1017018910:
-#                         bot.send_message(message.chat.id, '1 - /messages_delete\n2 - /amounts_delete')
-#                         if message.text == "/messages_delete":
-#                             query1 = '''DELETE FROM messages WHERE deleted_at is not null'''
-#                             cursor.execute(query1)
-#                             bot.send_message(message.chat.id, 'messages с <b>deleted_at is not null</b> удалены.',
-#                                              parse_mode='html')
-#                         elif message.text == "/amounts_delete":
-#                             query2 = '''DELETE FROM amounts WHERE deleted_at is not null'''
-#                             cursor.execute(query2)
-#                             bot.send_message(message.chat.id, 'amounts с <b>deleted_at is not null</b> удалены.',
-#                                              parse_mode='html')
-#                         else:
-#                             bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
-#                     else:
-#                         bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
-#                 connection.commit()
-#         elif message.text == "/user":
-#             with closing(psycopg2.connect(
-#                     host='ec2-54-86-170-8.compute-1.amazonaws.com',
-#                     user='xblukmphspyoak',
-#                     password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-#                     dbname='d2iaoufpucitsq')) as connection:
-#                 with connection.cursor() as cursor:
-#                     id_telegram = message.from_user.id
-#                     if id_telegram == 1017018910:
-#                         bot.send_message(message.chat.id, '1 - /users_count\n2 - /users_username')
-#                         if message.text == "/users_count":
-#                             query1 = '''SELECT count(id) from users'''
-#                             cursor.execute(query1)
-#                             for user_c in cursor:
-#                                 users_count = user_c[0]
-#                             bot.send_message(message.chat.id, '<b>{}</b> - пользователей'.format(users_count),
-#                                              parse_mode='html')
-#                         elif message.text == "/users_username":
-#                             query2 = '''SELECT username from users'''
-#                             cursor.execute(query2)
-#                             for user_n in cursor:
-#                                 users_username = user_n[0]
-#                             bot.send_message(message.chat.id, '@{}\n'.format(users_username),
-#                                              parse_mode='html')
-#                         else:
-#                             bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
-#                     else:
-#                         bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
-#                 connection.commit()
-#         else:
-#             bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+
 
 def get_message(message):
     with closing(psycopg2.connect(
