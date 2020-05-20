@@ -171,6 +171,7 @@ def lalala(message):
             bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
 
 
+@bot.message_handler(content_types=['text'])
 def admin(message):
     if message.chat.type == 'private':
         if message.text == u'/delete':
