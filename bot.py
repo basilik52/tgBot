@@ -1,14 +1,19 @@
+# -*- coding: utf-8 -*-
 import datetime
 import time
-
-import pymysql
+import psycopg2
 import telebot
+from psycopg2 import extras
+
 import config
 
 from telebot import types
 from datetime import datetime
-from pymysql.cursors import DictCursor
+from psycopg2.extras import DictCursor
 from contextlib import closing
+from telebot import apihelper
+
+
 
 bot = telebot.TeleBot(config.TOKEN)
 amount = 0
@@ -16,11 +21,12 @@ amount = 0
 
 @bot.message_handler(commands=['start'])
 def welcome(message):
-    with closing(pymysql.connect(
-            host='localhost',
-            user='basilik',
-            password='Anelli89!',
-            db='pyBot',
+    with closing(psycopg2.connect(
+            host='ec2-54-86-170-8.compute-1.amazonaws.com',
+            user='xblukmphspyoak',
+            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
+            dbname='d2iaoufpucitsq',
+            port='5432',
             charset='utf8mb4',
             cursorclass=DictCursor)) as connection:
         with connection.cursor() as cursor:
@@ -110,11 +116,11 @@ def lalala(message):
             bot.send_message(message.chat.id, 'Выбери период трат:', reply_markup=markup)
 
         elif message.text == u'Удалить сумму':
-            with closing(pymysql.connect(
-                    host='localhost',
-                    user='basilik',
-                    password='Anelli89!',
-                    db='pyBot',
+            with closing(psycopg2.connect(
+                    host='ec2-54-86-170-8.compute-1.amazonaws.com',
+                    user='xblukmphspyoak',
+                    password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
+                    dbname='d2iaoufpucitsq',
                     charset='utf8mb4',
                     cursorclass=DictCursor)) as connection:
 
@@ -150,11 +156,11 @@ def lalala(message):
                         bot.send_message(message.chat.id, 'Нет данных для удаления.')
                 connection.commit()
         elif message.text == u'Реклама/отзыв':
-            with closing(pymysql.connect(
-                    host='localhost',
-                    user='basilik',
-                    password='Anelli89!',
-                    db='pyBot',
+            with closing(psycopg2.connect(
+                    host='ec2-54-86-170-8.compute-1.amazonaws.com',
+                    user='xblukmphspyoak',
+                    password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
+                    dbname='d2iaoufpucitsq',
                     charset='utf8mb4',
                     cursorclass=DictCursor)) as connection:
 
@@ -178,11 +184,11 @@ def lalala(message):
 
 
 def get_message(message):
-    with closing(pymysql.connect(
-            host='localhost',
-            user='basilik',
-            password='Anelli89!',
-            db='pyBot',
+    with closing(psycopg2.connect(
+            host='ec2-54-86-170-8.compute-1.amazonaws.com',
+            user='xblukmphspyoak',
+            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
+            dbname='d2iaoufpucitsq',
             charset='utf8mb4',
             cursorclass=DictCursor)) as connection:
         with connection.cursor() as cursor:
@@ -210,11 +216,11 @@ def get_message(message):
 
 
 def get_amount(message):
-    with closing(pymysql.connect(
-            host='localhost',
-            user='basilik',
-            password='Anelli89!',
-            db='pyBot',
+    with closing(psycopg2.connect(
+            host='ec2-54-86-170-8.compute-1.amazonaws.com',
+            user='xblukmphspyoak',
+            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
+            dbname='d2iaoufpucitsq',
             charset='utf8mb4',
             cursorclass=DictCursor)) as connection:
         with connection.cursor() as cursor:
@@ -251,11 +257,11 @@ def get_amount(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
-    with closing(pymysql.connect(
-            host='localhost',
-            user='basilik',
-            password='Anelli89!',
-            db='pyBot',
+    with closing(psycopg2.connect(
+            host='ec2-54-86-170-8.compute-1.amazonaws.com',
+            user='xblukmphspyoak',
+            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
+            dbname='d2iaoufpucitsq',
             charset='utf8mb4',
             cursorclass=DictCursor)) as connection:
         with connection.cursor() as cursor:
@@ -343,3 +349,13 @@ def callback_inline(call):
 #         time.sleep(5)
 if __name__ == '__main__':
     bot.polling(none_stop=True)
+# bot.infinity_polling(True)
+# while True:
+#     try:
+#         bot.polling(none_stop=True)
+#
+#     except Exception as e:
+#         telebot.logger.error(e)  # или просто print(e) если у вас логгера нет,
+#         # или import traceback; traceback.print_exc() для печати полной инфы
+#         time.sleep(15)
+# bot = telebot.TeleBot(extras.token, threaded=False)
