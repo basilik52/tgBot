@@ -1,23 +1,16 @@
 # -*- coding: utf-8 -*-
 import datetime
-import time
 import psycopg2
 import telebot
-from psycopg2 import extras
-
 import config
 
 from telebot import types
 from datetime import datetime
 from psycopg2.extras import DictCursor
 from contextlib import closing
-from telebot import apihelper
-
-
 
 bot = telebot.TeleBot(config.TOKEN)
 amount = 0
-
 
 @bot.message_handler(commands=['start'])
 def welcome(message):
