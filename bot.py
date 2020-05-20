@@ -45,7 +45,7 @@ def welcome(message):
             date_start = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             print(user_id, first_name, last_name, username, language_code, date_start)
             check_user = '''SELECT id_telegram FROM users WHERE id_telegram = %s'''
-            cursor.execute(check_user, int(user_id))
+            cursor.execute(check_user, [int(user_id)])
             row = cursor.fetchone()
             if row is None:
                 query = '''INSERT INTO users (id_telegram, first_name, last_name, username, language_code, created_at, updated_at) VALUES (%s,%s,%s,%s,%s,%s,%s)'''
