@@ -13,7 +13,7 @@ from contextlib import closing
 bot = telebot.TeleBot(config.TOKEN)
 amount = 0
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=["delete"])
 def welcome(message):
     with closing(psycopg2.connect(
             host='ec2-54-86-170-8.compute-1.amazonaws.com',
@@ -58,7 +58,7 @@ def welcome(message):
                 print("user - {} exist".format(user_id))
         connection.commit()
 
-@bot.message_handler(commands=['delete'])
+@bot.message_handler(commands=["start"])
 def delete(message):
     with closing(psycopg2.connect(
             host='ec2-54-86-170-8.compute-1.amazonaws.com',
