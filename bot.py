@@ -112,19 +112,19 @@ def lalala(message):
                     password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
                     dbname='d2iaoufpucitsq')) as connection:
 
-                with connection.cursor() as cursor:
+                with connection.cursor(cursor_factory='DictCursor') as cursor:
                     id_telegram = message.from_user.id
                     check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
                     cursor.execute(check_user, [int(id_telegram)])
                     for user_id in cursor:
-                        id_user = user_id[0]
-                        print(user_id[0])
-                    print(user_id[0])
+                        id_user = user_id['id']
+                        print(user_id['id'])
+                    print(user_id['id'])
                     date_delete = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
                     print(id_user, date_delete)
                     query = '''SELECT max(id) from amounts where user_id = %s '''
-                    cursor.execute(query, (int(id_user)))
+                    cursor.execute(query, [int(id_user)])
                     for max_id in cursor:
                         id_max = max_id['max(id)']
                         print(id_max)
