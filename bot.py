@@ -129,7 +129,7 @@ def lalala(message):
                     query = '''SELECT max(id) from amounts where user_id = %s '''
                     cursor.execute(query, [int(id_user)])
                     for max_id in cursor:
-                        id_max = max_id['max(id)']
+                        id_max = max_id['id']
                         print(id_max)
                     query = '''SELECT deleted_at from amounts where user_id = %s and id = (select max(id) from amounts where user_id = %s)'''
                     cursor.execute(query, (int(id_user), int(id_user)))
