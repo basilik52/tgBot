@@ -174,7 +174,7 @@ def lalala(message):
 @bot.message_handler(content_types=['text'])
 def admin(message):
     if message.chat.type == 'private':
-        if message.text == u'/delete':
+        if message.text == "/delete":
             with closing(psycopg2.connect(
                     host='ec2-54-86-170-8.compute-1.amazonaws.com',
                     user='xblukmphspyoak',
@@ -184,12 +184,12 @@ def admin(message):
                     id_telegram = message.from_user.id
                     if id_telegram == 1017018910:
                         bot.send_message(message.chat.id, '1 - /messages_delete\n2 - /amounts_delete')
-                        if message.text == u'/messages_delete':
+                        if message.text == "/messages_delete":
                             query1 = '''DELETE FROM messages WHERE deleted_at is not null'''
                             cursor.execute(query1)
                             bot.send_message(message.chat.id, 'messages с <b>deleted_at is not null</b> удалены.',
                                              parse_mode='html')
-                        elif message.text == u'/amounts_delete':
+                        elif message.text == "/amounts_delete":
                             query2 = '''DELETE FROM amounts WHERE deleted_at is not null'''
                             cursor.execute(query2)
                             bot.send_message(message.chat.id, 'amounts с <b>deleted_at is not null</b> удалены.',
@@ -199,7 +199,7 @@ def admin(message):
                     else:
                         bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
                 connection.commit()
-        elif message.text == u'/user':
+        elif message.text == "/user":
             with closing(psycopg2.connect(
                     host='ec2-54-86-170-8.compute-1.amazonaws.com',
                     user='xblukmphspyoak',
@@ -209,14 +209,14 @@ def admin(message):
                     id_telegram = message.from_user.id
                     if id_telegram == 1017018910:
                         bot.send_message(message.chat.id, '1 - /users_count\n2 - /users_username')
-                        if message.text == u'/users_count':
+                        if message.text == "/users_count":
                             query1 = '''SELECT count(id) from users'''
                             cursor.execute(query1)
                             for user_c in cursor:
                                 users_count = user_c[0]
                             bot.send_message(message.chat.id, '<b>{}</b> - пользователей'.format(users_count),
                                              parse_mode='html')
-                        elif message.text == u'/users_username':
+                        elif message.text == "/users_username":
                             query2 = '''SELECT username from users'''
                             cursor.execute(query2)
                             for user_n in cursor:
