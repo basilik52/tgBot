@@ -117,9 +117,9 @@ def lalala(message):
                     check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
                     cursor.execute(check_user, [int(id_telegram)])
                     for user_id in cursor:
-                        id_user = user_id['id']
-                        print(user_id['id'])
-                    print(user_id['id'])
+                        id_user = user_id[0]
+                        print(user_id[0])
+                    print(user_id[0])
                     date_delete = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
                     print(id_user, date_delete)
