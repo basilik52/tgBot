@@ -156,7 +156,7 @@ def lalala(message):
                 with connection.cursor() as cursor:
                     id_telegram = message.from_user.id
                     if id_telegram == 1017018910:
-                        query1 = '''DELETE FROM message WHERE deleted_at is not null'''
+                        query1 = '''DELETE FROM messages WHERE deleted_at is not null'''
                         cursor.execute(query1)
                         query = '''SELECT message from messages where checked is null and deleted_at is null'''
                         cursor.execute(query)
