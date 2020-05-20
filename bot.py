@@ -115,7 +115,7 @@ def lalala(message):
                     dbname='d2iaoufpucitsq',
                     cursor_factory=DictCursor)) as connection:
 
-                with connection.cursor(cursor_factory='DictCursor') as cursor:
+                with connection.cursor() as cursor:
                     id_telegram = message.from_user.id
                     check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
                     cursor.execute(check_user, [int(id_telegram)])
