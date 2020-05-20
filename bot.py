@@ -118,6 +118,8 @@ def lalala(message):
                     cursor.execute(check_user, [int(id_telegram)])
                     for user_id in cursor:
                         id_user = user_id['id']
+                        print(user_id['id'])
+                    print(user_id['id'])
                     date_delete = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
                     print(id_user, date_delete)
