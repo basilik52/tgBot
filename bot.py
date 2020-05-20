@@ -42,7 +42,7 @@ def welcome(message):
             last_name = message.from_user.last_name
             username = message.from_user.username
             language_code = message.from_user.language_code
-            date_start = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            date_start = datetime.now()
             print(user_id, first_name, last_name, username, language_code, date_start)
             check_user = '''SELECT id_telegram FROM users WHERE id_telegram = %s'''
             cursor.execute(check_user, [int(user_id)])
@@ -61,7 +61,7 @@ def welcome(message):
 def lalala(message):
     if message.chat.type == 'private':
         if message.text == u'О боте':
-            bot.send_message(message.chat.id, 'Бот написан на python3. \nversion <b>2.3</b> (19.05.2020)', parse_mode='html')
+            bot.send_message(message.chat.id, 'Бот написан на python3. \nversion <b>3.0</b> (20.05.2020)', parse_mode='html')
         elif message.text == u'Добавить сумму':
 
             # markup_category = types.InlineKeyboardMarkup(row_width=2)
