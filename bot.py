@@ -13,7 +13,7 @@ from contextlib import closing
 bot = telebot.TeleBot(config.TOKEN)
 amount = 0
 
-@bot.message_handler(commands=["delete"])
+@bot.message_handler(commands=["start"])
 def welcome(message):
     with closing(psycopg2.connect(
             host='ec2-54-86-170-8.compute-1.amazonaws.com',
@@ -58,7 +58,7 @@ def welcome(message):
                 print("user - {} exist".format(user_id))
         connection.commit()
 
-@bot.message_handler(commands=["start"])
+@bot.message_handler(commands=["delete"])
 def delete(message):
     with closing(psycopg2.connect(
             host='ec2-54-86-170-8.compute-1.amazonaws.com',
@@ -68,7 +68,7 @@ def delete(message):
         with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
-                message.reply(message.chat.id, '1 - /messages_delete\n2 - /amounts_delete')
+                bot.send_message(message.chat.id, '1 - /messages_delete\n2 - /amounts_delete')
                 if message.text == "/messages_delete":
                     query1 = '''DELETE FROM messages WHERE deleted_at is not null'''
                     cursor.execute(query1)
