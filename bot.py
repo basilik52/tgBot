@@ -6,7 +6,6 @@ import config
 
 from telebot import types
 from datetime import datetime
-from psycopg2.extras import DictCursor
 from contextlib import closing
 
 bot = telebot.TeleBot(config.TOKEN)
@@ -19,9 +18,7 @@ def welcome(message):
             user='xblukmphspyoak',
             password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
             dbname='d2iaoufpucitsq',
-            port='5432',
-            charset='utf8mb4',
-            cursorclass=DictCursor)) as connection:
+            port='5432')) as connection:
         with connection.cursor() as cursor:
             sti = open('static/welcome.webp', 'rb')
             bot.send_sticker(message.chat.id, sti)
@@ -113,9 +110,7 @@ def lalala(message):
                     host='ec2-54-86-170-8.compute-1.amazonaws.com',
                     user='xblukmphspyoak',
                     password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-                    dbname='d2iaoufpucitsq',
-                    charset='utf8mb4',
-                    cursorclass=DictCursor)) as connection:
+                    dbname='d2iaoufpucitsq')) as connection:
 
                 with connection.cursor() as cursor:
                     id_telegram = message.from_user.id
@@ -153,9 +148,7 @@ def lalala(message):
                     host='ec2-54-86-170-8.compute-1.amazonaws.com',
                     user='xblukmphspyoak',
                     password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-                    dbname='d2iaoufpucitsq',
-                    charset='utf8mb4',
-                    cursorclass=DictCursor)) as connection:
+                    dbname='d2iaoufpucitsq')) as connection:
 
                 with connection.cursor() as cursor:
                     id_telegram = message.from_user.id
@@ -181,9 +174,7 @@ def get_message(message):
             host='ec2-54-86-170-8.compute-1.amazonaws.com',
             user='xblukmphspyoak',
             password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-            dbname='d2iaoufpucitsq',
-            charset='utf8mb4',
-            cursorclass=DictCursor)) as connection:
+            dbname='d2iaoufpucitsq')) as connection:
         with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
@@ -213,9 +204,7 @@ def get_amount(message):
             host='ec2-54-86-170-8.compute-1.amazonaws.com',
             user='xblukmphspyoak',
             password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-            dbname='d2iaoufpucitsq',
-            charset='utf8mb4',
-            cursorclass=DictCursor)) as connection:
+            dbname='d2iaoufpucitsq')) as connection:
         with connection.cursor() as cursor:
 
             try:
@@ -254,9 +243,7 @@ def callback_inline(call):
             host='ec2-54-86-170-8.compute-1.amazonaws.com',
             user='xblukmphspyoak',
             password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-            dbname='d2iaoufpucitsq',
-            charset='utf8mb4',
-            cursorclass=DictCursor)) as connection:
+            dbname='d2iaoufpucitsq')) as connection:
         with connection.cursor() as cursor:
             try:
 
