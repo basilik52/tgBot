@@ -206,19 +206,21 @@ def get_amount(message):
             password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
             dbname='d2iaoufpucitsq')) as connection:
         with connection.cursor() as cursor:
-
             try:
                 # categoryId = '''SELECT id FROM categories WHERE name_translate = %s'''
                 # cursor.execute(categoryId, str(call.data))
                 global amount
                 id_telegram = message.from_user.id
+                print('id_telegram'.format(id_telegram))
                 check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
                 cursor.execute(check_user, int(id_telegram))
                 for user_id in cursor:
                     id_user = user_id['id']
+                    print('id_user'.format(id_user))
+                    print('message.text'.format(message.text))
                 amount = int(message.text)
 
-                date_start = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                date_start = datetime.now()
 
                 print(id_user, amount, date_start)
 
