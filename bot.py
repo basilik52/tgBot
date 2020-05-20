@@ -115,7 +115,7 @@ def lalala(message):
                 with connection.cursor() as cursor:
                     id_telegram = message.from_user.id
                     check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
-                    cursor.execute(check_user, int(id_telegram))
+                    cursor.execute(check_user, [int(id_telegram)])
                     for user_id in cursor:
                         id_user = user_id['id']
                     date_delete = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -213,7 +213,7 @@ def get_amount(message):
                 id_telegram = message.from_user.id
                 print('id_telegram'.format(message.from_user.id))
                 check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
-                cursor.execute(check_user, int(id_telegram))
+                cursor.execute(check_user, [int(id_telegram)])
                 for user_id in cursor:
                     id_user = user_id['id']
                 print(id_user)
