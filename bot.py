@@ -156,6 +156,8 @@ def lalala(message):
                 with connection.cursor() as cursor:
                     id_telegram = message.from_user.id
                     if id_telegram == 1017018910:
+                        query1 = '''DELETE FROM message WHERE deleted_at is not null'''
+                        cursor.execute(query1)
                         query = '''SELECT message from messages where checked is null and deleted_at is null'''
                         cursor.execute(query)
                         for m_c in cursor:
@@ -266,7 +268,7 @@ def callback_inline(call):
                         else:
                             bot.send_message(call.message.chat.id, "Сегодня - 0 руб.")
                     elif call.data == 'week':
-                        amount_week = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and (week(created_at) = week(current_date)) and (year(created_at) = year(current_date)) and deleted_at is null'''
+                        amount_week = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and (EXTRACT(WEEK FROM created_at) = EXTRACT(WEEK FROM current_date)) and (EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM current_date)) and deleted_at is null'''
                         cursor.execute(amount_week, [int(id_user)])
                         for am_w in cursor:
                             am_week = am_w[0]
@@ -275,7 +277,7 @@ def callback_inline(call):
                         else:
                             bot.send_message(call.message.chat.id, "За неделю - 0 руб.")
                     elif call.data == 'month':
-                        amount_month = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and (month(created_at) = month(current_date)) and (year(created_at) = year(current_date)) and deleted_at is null'''
+                        amount_month = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and (EXTRACT(MONTH FROM created_at) = EXTRACT(MONTH FROM current_date)) and (EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM current_date)) and deleted_at is null'''
                         cursor.execute(amount_month, [int(id_user)])
                         for am_m in cursor:
                             am_month = am_m[0]
@@ -284,7 +286,7 @@ def callback_inline(call):
                         else:
                             bot.send_message(call.message.chat.id, "За месяц - 0 руб.")
                     elif call.data == 'quarter':
-                        amount_quarter = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and (QUARTER(created_at) = QUARTER(current_date)) and (year(created_at) = year(current_date)) and deleted_at is null'''
+                        amount_quarter = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and (EXTRACT(QUARTER FROM created_at) = EXTRACT(QUARTER FROM current_date)) and (EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM current_date)) and deleted_at is null'''
                         cursor.execute(amount_quarter, [int(id_user)])
                         for am_q in cursor:
                             am_quarter = am_q[0]
@@ -293,10 +295,10 @@ def callback_inline(call):
                         else:
                             bot.send_message(call.message.chat.id, "За квартал - 0 руб.")
                     elif call.data == 'half':
-                        amount_half = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and deleted_at is null and (QUARTER(current_date) <= 2 and QUARTER(created_at) <= 2 and (QUARTER(created_at) <= QUARTER(current_date)) and
-                                                 (year(created_at) = year(current_date)))
-                                           or (QUARTER(current_date) >= 3 and QUARTER(created_at) >= 3 and (QUARTER(created_at) <= QUARTER(current_date)) and
-                                               (year(created_at) = year(current_date)))'''
+                        amount_half = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and deleted_at is null and (EXTRACT(QUARTER FROM current_date) <= 2 and EXTRACT(QUARTER FROM created_at) <= 2 and (EXTRACT(QUARTER FROM created_at) <= EXTRACT(QUARTER FROM current_date)) and
+                                                 (EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM current_date)))
+                                           or (EXTRACT(QUARTER FROM current_date) >= 3 and EXTRACT(QUARTER FROM created_at) >= 3 and (EXTRACT(QUARTER FROM created_at) <= EXTRACT(QUARTER FROM current_date)) and
+                                               (EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM current_date)))'''
                         cursor.execute(amount_half, [int(id_user)])
                         for am_h in cursor:
                             am_half = am_h[0]
@@ -305,7 +307,7 @@ def callback_inline(call):
                         else:
                             bot.send_message(call.message.chat.id, "За полгода - 0 руб.")
                     elif call.data == 'year':
-                        amount_year = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and (year(created_at) = year(current_date)) and deleted_at is null'''
+                        amount_year = '''SELECT sum(amount) FROM amounts WHERE user_id = %s and (EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM current_date)) and deleted_at is null'''
                         cursor.execute(amount_year, [int(id_user)])
                         for am_y in cursor:
                             am_year = am_y[0]
