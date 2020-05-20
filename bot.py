@@ -14,7 +14,7 @@ bot = telebot.TeleBot(config.TOKEN)
 amount = 0
 
 @bot.message_handler(commands=['start'])
-async def welcome(message):
+def welcome(message):
     with closing(psycopg2.connect(
             host='ec2-54-86-170-8.compute-1.amazonaws.com',
             user='xblukmphspyoak',
@@ -58,6 +58,32 @@ async def welcome(message):
                 print("user - {} exist".format(user_id))
         connection.commit()
 
+@bot.message_handler(commands=['delete'])
+def delete(message):
+    with closing(psycopg2.connect(
+            host='ec2-54-86-170-8.compute-1.amazonaws.com',
+            user='xblukmphspyoak',
+            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
+            dbname='d2iaoufpucitsq')) as connection:
+        with connection.cursor() as cursor:
+            id_telegram = message.from_user.id
+            if id_telegram == 1017018910:
+                message.reply(message.chat.id, '1 - /messages_delete\n2 - /amounts_delete')
+                if message.text == "/messages_delete":
+                    query1 = '''DELETE FROM messages WHERE deleted_at is not null'''
+                    cursor.execute(query1)
+                    bot.send_message(message.chat.id, 'messages с <b>deleted_at is not null</b> удалены.',
+                                     parse_mode='html')
+                elif message.text == "/amounts_delete":
+                    query2 = '''DELETE FROM amounts WHERE deleted_at is not null'''
+                    cursor.execute(query2)
+                    bot.send_message(message.chat.id, 'amounts с <b>deleted_at is not null</b> удалены.',
+                                     parse_mode='html')
+                else:
+                    bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+            else:
+                bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+        connection.commit()
 
 @bot.message_handler(content_types=['text'])
 def lalala(message):
@@ -170,32 +196,7 @@ def lalala(message):
         else:
             bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
 
-@bot.message_handler(commands=['delete'])
-async def delete(message):
-    with closing(psycopg2.connect(
-            host='ec2-54-86-170-8.compute-1.amazonaws.com',
-            user='xblukmphspyoak',
-            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-            dbname='d2iaoufpucitsq')) as connection:
-        with connection.cursor() as cursor:
-            id_telegram = message.from_user.id
-            if id_telegram == 1017018910:
-                message.reply(message.chat.id, '1 - /messages_delete\n2 - /amounts_delete')
-                if message.text == "/messages_delete":
-                    query1 = '''DELETE FROM messages WHERE deleted_at is not null'''
-                    cursor.execute(query1)
-                    bot.send_message(message.chat.id, 'messages с <b>deleted_at is not null</b> удалены.',
-                                     parse_mode='html')
-                elif message.text == "/amounts_delete":
-                    query2 = '''DELETE FROM amounts WHERE deleted_at is not null'''
-                    cursor.execute(query2)
-                    bot.send_message(message.chat.id, 'amounts с <b>deleted_at is not null</b> удалены.',
-                                     parse_mode='html')
-                else:
-                    bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
-            else:
-                bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
-        connection.commit()
+
 
 # @bot.message_handler(content_types=['text'])
 # def admin(message):
