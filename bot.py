@@ -121,8 +121,6 @@ def lalala(message):
                     cursor.execute(check_user, [int(id_telegram)])
                     for user_id in cursor:
                         id_user = user_id['id']
-                        print(user_id['id'])
-                    print(user_id['id'])
                     date_delete = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
                     print(id_user, date_delete)
@@ -130,7 +128,8 @@ def lalala(message):
                     cursor.execute(query, [int(id_user)])
                     for max_id in cursor:
                         id_max = max_id['id']
-                        print(id_max)
+                        print(max_id)
+                    print(max_id)
                     query = '''SELECT deleted_at from amounts where user_id = %s and id = (select max(id) from amounts where user_id = %s)'''
                     cursor.execute(query, (int(id_user), int(id_user)))
 
