@@ -211,7 +211,7 @@ def get_category(message):
                 print(id_user)
                 category = message.text
                 print(category)
-                check_category = '''SELECT id FROM categories WHERE name = '%s' '''
+                check_category = '''SELECT id FROM categories WHERE name like %s'''
                 cursor.execute(check_category, str(category))
                 for check_c in cursor:
                     check_categ = check_c[0]
@@ -226,10 +226,12 @@ def get_category(message):
                 mag = bot.send_message(message.chat.id, 'Введите сумму <b>без</b> копеек:', parse_mode='html')
                 bot.register_next_step_handler(mag, get_amount)
 
-            except Exception:
-                msg = bot.send_message(message.chat.id,
-                                       'Упс.. <b>Попробуйте снова.</b>',
-                                       parse_mode='html')
+
+            except Exception as e:
+                print(repr(e))
+                # msg = bot.send_message(message.chat.id,
+                #                        'Упс.. <b>Попробуйте снова.</b>',
+                #                        parse_mode='html')
                 # bot.register_next_step_handler(msg, get_amount)
         connection.commit()
 
