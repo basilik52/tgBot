@@ -211,7 +211,7 @@ def get_category(message):
                 print(id_user)
                 category = message.text
                 print(category)
-                check_category = '''SELECT id FROM categories WHERE name like %s'''
+                check_category = '''SELECT id FROM categories WHERE name = %%s'''
                 cursor.execute(check_category, str(category))
                 for check_c in cursor:
                     check_categ = check_c[0]
