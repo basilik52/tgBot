@@ -15,6 +15,16 @@ bot = telebot.TeleBot(config.TOKEN)
 amount = 0
 
 
+def commands(message):
+    if __name__ == '__main__':
+        delete(message)
+        messages_delete(message)
+        amounts_delete(message)
+        user(message)
+        users_username(message)
+        users_count(message)
+
+
 @bot.message_handler(content_types=['text'])
 def lalala(message):
     if message.chat.type == 'private':
