@@ -14,16 +14,17 @@ from command import *
 bot = telebot.TeleBot(config.TOKEN)
 amount = 0
 
+
+# @bot.message_handler(commands=["start", "delete", "messages_delete", "a,ounts_delete", "user", "users_count", ""])
 @bot.message_handler(commands=["start"])
 def commands(message):
-    if __name__ == '__main__':
-        welcome(message)
-        delete(message)
-        messages_delete(message)
-        amounts_delete(message)
-        user(message)
-        users_username(message)
-        users_count(message)
+    welcome(message)
+    delete(message)
+    messages_delete(message)
+    amounts_delete(message)
+    user(message)
+    users_username(message)
+    users_count(message)
 
 
 @bot.message_handler(content_types=['text'])
