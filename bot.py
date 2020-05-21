@@ -63,6 +63,7 @@ def lalala(message):
                                    'Образование - /education\nОдежда и аксессуары - /clothes\nОтдых и развлечения - /entertainment\n'
                                    'Перевод - /transfer\nКредит - /credit\nПутешествия - /travel\nРестораны и кафе - /cafe\nСупермаркет'
                                    ' - /supermarket\nТранспорт - /transport\nПрочие расходы - /other', parse_mode='html')
+
             bot.register_next_step_handler(mag, get_category)
 
         elif message.text == u'Статистика трат':
@@ -182,6 +183,10 @@ def get_category(message):
             dbname='df9nfputb06mls')) as connection:
         with connection.cursor() as cursor:
             try:
+                bot.edit_message_text(chat_id=message.chat.id, message_id=message.message_id,
+                                      text="Добавить сумму",
+                                      reply_markup=None)
+
                 id_telegram = message.from_user.id
                 check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
                 cursor.execute(check_user, [int(id_telegram)])
@@ -297,6 +302,12 @@ def callback_inline(call):
                             am_week = am_w[0]
                         if am_week is not None:
                             bot.send_message(call.message.chat.id, "За неделю - {} руб.".format(am_week))
+                            amount_week_name = '''SELECT sum(amount), c.name_ru FROM amounts join categories c on amounts.category_id = c.id WHERE user_id = %s and (EXTRACT(WEEK FROM created_at) = EXTRACT(WEEK FROM current_date)) and (EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM current_date)) and deleted_at is null group by c.name_ru'''
+                            cursor.execute(amount_week_name, [int(id_user)])
+                            for am_we in cursor:
+                                amo_week = am_we[0]
+                                n_week = am_we[1]
+                                bot.send_message(call.message.chat.id, "В том числе {} руб. - {}".format(amo_week,n_week))
                         else:
                             bot.send_message(call.message.chat.id, "За неделю - 0 руб.")
                     elif call.data == 'month':
