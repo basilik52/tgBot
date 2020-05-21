@@ -217,14 +217,14 @@ def get_category(message):
                 check_category = '''SELECT id FROM categories WHERE name = %s'''
                 cursor.execute(check_category, str(category))
                 for check_c in cursor:
-                    check_category = check_c[0]
-                    print(check_category)
-                print(check_category)
+                    check_categ = check_c[0]
+                    print(check_categ)
+                print(check_categ)
                 date_start = datetime.now()
 
                 query = '''INSERT INTO amounts (user_id, category_id, created_at, updated_at) VALUES (%s,%s,%s,%s)'''
                 cursor.execute(query, (
-                    int(id_user), int(check_category), str(date_start), str(date_start)))
+                    int(id_user), int(check_categ), str(date_start), str(date_start)))
 
                 mag = bot.send_message(message.chat.id, 'Введите сумму <b>без</b> копеек:', parse_mode='html')
                 bot.register_next_step_handler(mag, get_amount)
