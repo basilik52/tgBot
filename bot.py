@@ -187,10 +187,10 @@ def lalala(message):
 
         elif message.text == u'Удалить сумму':
             with closing(psycopg2.connect(
-                    host='ec2-54-86-170-8.compute-1.amazonaws.com',
-                    user='xblukmphspyoak',
-                    password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-                    dbname='d2iaoufpucitsq')) as connection:
+                    host='ec2-34-198-243-120.compute-1.amazonaws.com',
+                    user='yrxxtoynomwkrz',
+                    password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
+                    dbname='df9nfputb06mls')) as connection:
 
                 with connection.cursor() as cursor:
                     id_telegram = message.from_user.id
@@ -226,10 +226,10 @@ def lalala(message):
                 connection.commit()
         elif message.text == u'Реклама/отзыв':
             with closing(psycopg2.connect(
-                    host='ec2-54-86-170-8.compute-1.amazonaws.com',
-                    user='xblukmphspyoak',
-                    password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-                    dbname='d2iaoufpucitsq')) as connection:
+                    host='ec2-34-198-243-120.compute-1.amazonaws.com',
+                    user='yrxxtoynomwkrz',
+                    password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
+                    dbname='df9nfputb06mls')) as connection:
 
                 with connection.cursor() as cursor:
                     id_telegram = message.from_user.id
