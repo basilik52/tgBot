@@ -20,10 +20,10 @@ password_db = config.password
 @bot.message_handler(commands=["start"])
 def welcome(message):
     with closing(psycopg2.connect(
-            host=host_db,
-            user=user_db,
-            password=password_db,
-            dbname=database
+            host=config.host,
+            user=config.user,
+            password=config.password,
+            dbname=config.dbname
             )) as connection:
         with connection.cursor() as cursor:
             sti = open('static/welcome.webp', 'rb')
