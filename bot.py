@@ -59,7 +59,7 @@ with closing(psycopg2.connect(
                 else:
                     print("user - {} exist".format(user_id))
             connection.commit()
-connection.close()
+
 
 @bot.message_handler(commands=["delete"])
 def delete(message):
