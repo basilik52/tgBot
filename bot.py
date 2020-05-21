@@ -13,63 +13,75 @@ from contextlib import closing
 bot = telebot.TeleBot(config.TOKEN)
 amount = 0
 
-connection = psycopg2.connect(
+@bot.message_handler(commands=["start"])
+def welcome(message):
+    with closing(psycopg2.connect(
             host='ec2-34-198-243-120.compute-1.amazonaws.com',
             user='yrxxtoynomwkrz',
             password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
-            dbname='df9nfputb06mls')
+            dbname='df9nfputb06mls')) as connection:
+        with connection.cursor() as cursor:
+            sti = open('static/welcome.webp', 'rb')
+            bot.send_sticker(message.chat.id, sti)
 
-cursor = connection.cursor()
+            # keyboard
+            markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
+            item1 = types.KeyboardButton("Удалить сумму")
+            item2 = types.KeyboardButton("Добавить сумму")
+            item3 = types.KeyboardButton("Реклама/отзыв")
+            item4 = types.KeyboardButton("Статистика трат")
+            item5 = types.KeyboardButton("О боте")
 
-@bot.message_handler(commands=["start"])
-def welcome(message):
-        sti = open('static/welcome.webp', 'rb')
-        bot.send_sticker(message.chat.id, sti)
-        # keyboard
-        markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
-        item1 = types.KeyboardButton("Удалить сумму")
-        item2 = types.KeyboardButton("Добавить сумму")
-        item3 = types.KeyboardButton("Реклама/отзыв")
-        item4 = types.KeyboardButton("Статистика трат")
-        item5 = types.KeyboardButton("О боте")
+            markup.add(item1, item2, item3, item4, item5)
+            bot.send_message(message.chat.id,
+                             "Добро пожаловать, {0.first_name}!\nЯ - <b>{1.first_name}</b>, бот созданный чтобы помочь тебе узнать свои траты за определенное время..".format(
+                                 message.from_user, bot.get_me()),
+                             parse_mode='html', reply_markup=markup)
 
-        markup.add(item1, item2, item3, item4, item5)
-        bot.send_message(message.chat.id,
-                         "Добро пожаловать, {0.first_name}!\nЯ - <b>{1.first_name}</b>, бот созданный чтобы помочь тебе узнать свои траты за определенное время..".format(
-                             message.from_user, bot.get_me()),
-                         parse_mode='html', reply_markup=markup)
-
-        user_id = message.from_user.id
-        first_name = message.from_user.first_name
-        last_name = message.from_user.last_name
-        username = message.from_user.username
-        language_code = message.from_user.language_code
-        date_start = datetime.now()
-        print(user_id, first_name, last_name, username, language_code, date_start)
-        check_user = '''SELECT id_telegram FROM users WHERE id_telegram = %s'''
-        cursor.execute(check_user, [int(user_id)])
-        row = cursor.fetchone()
-        if row is None:
-            cursor1 = connection.cursor()
-            query = '''INSERT INTO users (id_telegram, first_name, last_name, username, language_code, created_at, updated_at) VALUES (%s,%s,%s,%s,%s,%s,%s)'''
-            cursor.execute(query, (
-                int(user_id), str(first_name), str(last_name), str(username), str(language_code), str(date_start),
-                str(date_start)))
-        else:
-            print("user - {} exist".format(user_id))
+            user_id = message.from_user.id
+            first_name = message.from_user.first_name
+            last_name = message.from_user.last_name
+            username = message.from_user.username
+            language_code = message.from_user.language_code
+            date_start = datetime.now()
+            print(user_id, first_name, last_name, username, language_code, date_start)
+            check_user = '''SELECT id_telegram FROM users WHERE id_telegram = %s'''
+            cursor.execute(check_user, [int(user_id)])
+            row = cursor.fetchone()
+            if row is None:
+                query = '''INSERT INTO users (id_telegram, first_name, last_name, username, language_code, created_at, updated_at) VALUES (%s,%s,%s,%s,%s,%s,%s)'''
+                cursor.execute(query, (
+                    int(user_id), str(first_name), str(last_name), str(username), str(language_code), str(date_start),
+                    str(date_start)))
+            else:
+                print("user - {} exist".format(user_id))
+        connection.commit()
 
 
 @bot.message_handler(commands=["delete"])
 def delete(message):
+    with closing(psycopg2.connect(
+            host='ec2-34-198-243-120.compute-1.amazonaws.com',
+            user='yrxxtoynomwkrz',
+            password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
+            dbname='df9nfputb06mls')) as connection:
+        with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
                 bot.send_message(message.chat.id, '1 - /messages_delete\n2 - /amounts_delete')
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+        connection.commit()
 
 
 @bot.message_handler(commands=["messages_delete"])
 def messages_delete(message):
+    with closing(psycopg2.connect(
+            host='ec2-34-198-243-120.compute-1.amazonaws.com',
+            user='yrxxtoynomwkrz',
+            password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
+            dbname='df9nfputb06mls')) as connection:
+        with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
                 try:
@@ -81,10 +93,17 @@ def messages_delete(message):
                     bot.send_message(message.chat.id, 'Нет данных для удаления.')
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+        connection.commit()
+
 
 @bot.message_handler(commands=["amounts_delete"])
 def amounts_delete(message):
-
+    with closing(psycopg2.connect(
+            host='ec2-34-198-243-120.compute-1.amazonaws.com',
+            user='yrxxtoynomwkrz',
+            password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
+            dbname='df9nfputb06mls')) as connection:
+        with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
                 try:
@@ -96,19 +115,33 @@ def amounts_delete(message):
                     bot.send_message(message.chat.id, 'Нет данных для удаления.')
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+        connection.commit()
 
 
 @bot.message_handler(commands=["user"])
 def user(message):
+    with closing(psycopg2.connect(
+            host='ec2-34-198-243-120.compute-1.amazonaws.com',
+            user='yrxxtoynomwkrz',
+            password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
+            dbname='df9nfputb06mls')) as connection:
+        with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
                 bot.send_message(message.chat.id, '1 - /users_count\n2 - /users_username')
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+        connection.commit()
 
 
 @bot.message_handler(commands=["users_count"])
 def users_count(message):
+    with closing(psycopg2.connect(
+            host='ec2-34-198-243-120.compute-1.amazonaws.com',
+            user='yrxxtoynomwkrz',
+            password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
+            dbname='df9nfputb06mls')) as connection:
+        with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
                 query = '''SELECT count(id) from users'''
@@ -119,10 +152,17 @@ def users_count(message):
                                  parse_mode='html')
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+        connection.commit()
 
 
 @bot.message_handler(commands=["users_username"])
 def users_username(message):
+    with closing(psycopg2.connect(
+            host='ec2-34-198-243-120.compute-1.amazonaws.com',
+            user='yrxxtoynomwkrz',
+            password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
+            dbname='df9nfputb06mls')) as connection:
+        with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
                 query2 = '''SELECT username from users'''
@@ -133,6 +173,7 @@ def users_username(message):
                                      parse_mode='html')
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+        connection.commit()
 
 
 @bot.message_handler(content_types=['text'])
@@ -249,6 +290,12 @@ def lalala(message):
 
 
 def get_message(message):
+    with closing(psycopg2.connect(
+            host='ec2-34-198-243-120.compute-1.amazonaws.com',
+            user='yrxxtoynomwkrz',
+            password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
+            dbname='df9nfputb06mls')) as connection:
+        with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
             cursor.execute(check_user, [int(id_telegram)])
@@ -269,8 +316,16 @@ def get_message(message):
                 bot.send_message(message.chat.id, 'Слишком длинное сообщение :(',
                                  parse_mode='html')
 
+        connection.commit()
+
 
 def get_amount(message):
+    with closing(psycopg2.connect(
+            host='ec2-34-198-243-120.compute-1.amazonaws.com',
+            user='yrxxtoynomwkrz',
+            password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
+            dbname='df9nfputb06mls')) as connection:
+        with connection.cursor() as cursor:
             try:
                 # categoryId = '''SELECT id FROM categories WHERE name_translate = %s'''
                 # cursor.execute(categoryId, str(call.data))
@@ -298,10 +353,17 @@ def get_amount(message):
                                        'Упс.. Должно быть целое числовое значение. <b>Попробуйте снова.</b>',
                                        parse_mode='html')
                 # bot.register_next_step_handler(msg, get_amount)
+        connection.commit()
 
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
+    with closing(psycopg2.connect(
+            host='ec2-34-198-243-120.compute-1.amazonaws.com',
+            user='yrxxtoynomwkrz',
+            password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
+            dbname='df9nfputb06mls')) as connection:
+        with connection.cursor() as cursor:
             try:
 
                 if call.message:
@@ -375,7 +437,7 @@ def callback_inline(call):
                                           reply_markup=None)
             except Exception as e:
                 print(repr(e))
-connection.commit()
+        connection.commit()
 
 
 # RUN
