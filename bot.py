@@ -54,35 +54,15 @@ def commands(message):
 def lalala(message):
     if message.chat.type == 'private':
         if message.text == u'О боте':
-            bot.send_message(message.chat.id, 'Бот написан на python3. \nversion <b>3.0</b> (20.05.2020)',
+            bot.send_message(message.chat.id, 'Бот написан на python3. \nversion <b>3.5</b> (21.05.2020)',
                              parse_mode='html')
         elif message.text == u'Добавить сумму':
-
-            # markup_category = types.InlineKeyboardMarkup(row_width=2)
-            # category1 = types.InlineKeyboardButton("Автомобиль", callback_data='car')
-            # category2 = types.InlineKeyboardButton("Все для дома", callback_data='transfer')
-            # category3 = types.InlineKeyboardButton("Здоровье и красота", callback_data='transfer')
-            # category4 = types.InlineKeyboardButton("Искусство", callback_data='art')
-            # category5 = types.InlineKeyboardButton("Коммунальные платежи", callback_data='transfer')
-            # category6 = types.InlineKeyboardButton("Связь и интернет", callback_data='internet')
-            # category7 = types.InlineKeyboardButton("Образование", callback_data='transfer')
-            # category8 = types.InlineKeyboardButton("Одежда и аксессуары", callback_data='transfer')
-            # category9 = types.InlineKeyboardButton("Отдых и развлечения", callback_data='transfer')
-            # category10 = types.InlineKeyboardButton("Перевод", callback_data='transfer')
-            # category11 = types.InlineKeyboardButton("Кредит", callback_data='credit')
-            # category12 = types.InlineKeyboardButton("Путешествие", callback_data='travel')
-            # category13 = types.InlineKeyboardButton("Рестораны и кафе", callback_data='cafe')
-            # category14 = types.InlineKeyboardButton("Супермаркеты", callback_data='supermarket')
-            # category15 = types.InlineKeyboardButton("Транспорт", callback_data='transport')
-            # category16 = types.InlineKeyboardButton("Прочие расходы", callback_data='other')
-            #
-            # markup_category.add(category1, category2, category3, category4, category5, category6, category7, category8,
-            #                     category9, category10, category11, category12, category13, category14, category15, category16)
-            #
-            # bot.send_message(message.chat.id, 'Выбери категорию:', reply_markup=markup_category)
             mag = bot.send_message(message.chat.id,
-                             'Выбери категорию:\nАвто - /auto\nТранспорт - /transport\nСупермаркет - /supermarket\nКредит - /credit\nинтернет - /internet\nПрочие расходы - /other\n')
-            # mag = bot.send_message(message.chat.id, 'Введите сумму <b>без</b> копеек:', parse_mode='html')
+                                   '<b>Выбери категорию:</b>\nАвтомобиль - /auto\nВсе для дома - /house\nЗдоровье и красота - '
+                                   '/beauty\nИскусство - /art\nКоммунальные платежи - /communal\nСвязь и интернет - /internet\n'
+                                   'Образование - /education\nОдежда и аксессуары - /clothes\nОтдых и развлечения - /entertainment\n'
+                                   'Перевод - /transfer\nКредит - /credit\nПутешествия - /travel\nРестораны и кафе - /cafe\nСупермаркет'
+                                   ' - /supermarket\nТранспорт - /transport\nПрочие расходы - /other', parse_mode='html')
             bot.register_next_step_handler(mag, get_category)
 
         elif message.text == u'Статистика трат':
@@ -225,13 +205,10 @@ def get_category(message):
 
                 mag = bot.send_message(message.chat.id, 'Введите сумму <b>без</b> копеек:', parse_mode='html')
                 bot.register_next_step_handler(mag, get_amount)
-
-
-            except Exception as e:
-                print(repr(e))
-                # msg = bot.send_message(message.chat.id,
-                #                        'Упс.. <b>Попробуйте снова.</b>',
-                #                        parse_mode='html')
+            except Exception:
+                msg = bot.send_message(message.chat.id,
+                                       'Упс.. Нет такой категории. <b>Попробуйте снова.</b>',
+                                       parse_mode='html')
                 # bot.register_next_step_handler(msg, get_amount)
         connection.commit()
 
