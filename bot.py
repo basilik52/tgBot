@@ -220,6 +220,9 @@ def get_amount(message):
                     int(id_user), int(amount), str(date_start), str(date_start)))
 
                 bot.send_message(message.chat.id, 'Добавлена сумма - {} руб.'.format(amount))
+                bot.send_message(message.chat.id, 'Выбери категорию:\n/Авто\n/Транспорт\n/Супермаркет\n/Кредит\n/Связь\n/Прочее\n')
+                category = message.text
+                print(category)
                 print('t_id - {} | amount - {}'.format(message.from_user.id, amount))
 
             except Exception:
