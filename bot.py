@@ -80,9 +80,10 @@ def lalala(message):
             #                     category9, category10, category11, category12, category13, category14, category15, category16)
             #
             # bot.send_message(message.chat.id, 'Выбери категорию:', reply_markup=markup_category)
-
-            mag = bot.send_message(message.chat.id, 'Введите сумму <b>без</b> копеек:', parse_mode='html')
-            bot.register_next_step_handler(mag, get_amount)
+            mag = bot.send_message(message.chat.id,
+                             'Выбери категорию:\nАвто - /auto\nТранспорт - /transport\nСупермаркет - /supermarket\nКредит - /credit\nинтернет - /internet\nПрочие расходы - /other\n')
+            # mag = bot.send_message(message.chat.id, 'Введите сумму <b>без</b> копеек:', parse_mode='html')
+            bot.register_next_step_handler(mag, get_category)
 
         elif message.text == u'Статистика трат':
 
@@ -193,6 +194,45 @@ def get_message(message):
         connection.commit()
 
 
+def get_category(message):
+    with closing(psycopg2.connect(
+            host='ec2-34-198-243-120.compute-1.amazonaws.com',
+            user='yrxxtoynomwkrz',
+            password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
+            dbname='df9nfputb06mls')) as connection:
+        with connection.cursor() as cursor:
+            try:
+                # categoryId = '''SELECT id FROM categories WHERE name_translate = %s'''
+                # cursor.execute(categoryId, str(call.data))
+
+                id_telegram = message.from_user.id
+                check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
+                cursor.execute(check_user, [int(id_telegram)])
+                for user_id in cursor:
+                    id_user = user_id[0]
+
+                category = message.text
+                check_category = '''SELECT id FROM categories WHERE name = %s'''
+                cursor.execute(check_category, str(category))
+                for check_c in cursor:
+                    check_category = check_c[0]
+
+                date_start = datetime.now()
+
+                query = '''INSERT INTO amounts (user_id, category_id, created_at, updated_at) VALUES (%s,%s,%s,%s)'''
+                cursor.execute(query, (
+                    int(id_user), int(check_category), str(date_start), str(date_start)))
+
+                mag = bot.send_message(message.chat.id, 'Введите сумму <b>без</b> копеек:', parse_mode='html')
+                bot.register_next_step_handler(mag, get_amount)
+            except Exception:
+                msg = bot.send_message(message.chat.id,
+                                       'Упс.. <b>Попробуйте снова.</b>',
+                                       parse_mode='html')
+                # bot.register_next_step_handler(msg, get_amount)
+        connection.commit()
+
+
 def get_amount(message):
     with closing(psycopg2.connect(
             host='ec2-34-198-243-120.compute-1.amazonaws.com',
@@ -209,20 +249,31 @@ def get_amount(message):
                 cursor.execute(check_user, [int(id_telegram)])
                 for user_id in cursor:
                     id_user = user_id[0]
+
                 amount = int(message.text)
 
                 date_start = datetime.now()
 
                 print(id_user, amount, date_start)
 
-                query = '''INSERT INTO amounts (user_id, amount, created_at, updated_at) VALUES (%s,%s,%s,%s)'''
-                cursor.execute(query, (
-                    int(id_user), int(amount), str(date_start), str(date_start)))
+                serch_user_category = '''SELECT id FROM amounts WHERE id = (SELECT max(am.id) from amounts am where am.user_id = %s and am.amount is null)'''
+                cursor.execute(serch_user_category, [int(id_user)])
+                for id_am in cursor:
+                    am_id = id_am[0]
 
-                bot.send_message(message.chat.id, 'Добавлена сумма - {} руб.'.format(amount))
-                bot.send_message(message.chat.id, 'Выбери категорию:\n/Авто\n/Транспорт\n/Супермаркет\n/Кредит\n/Связь\n/Прочее\n')
-                category = message.text
-                print(category)
+                query = '''UPDATE amounts SET amount = %s, updated_at = %s where user_id = %s and id = %s'''
+                cursor.execute(query, (int(amount), str(date_start), int(id_user), int(am_id)))
+
+                category_name = '''select c.name_ru 
+                from amounts a join categories c on a.category_id = c.id
+                where a.user_id = %s and a.category_id is not null 
+                and a.id = (select max(id) from amounts where user_id = %s and category_id is not null)'''
+                cursor.execute(serch_user_category, (int(id_user), int(id_user)))
+                for name_c in cursor:
+                    name_ru = name_c[0]
+
+                bot.send_message(message.chat.id, 'Добавлена сумма - {} руб. в категорию: {}'.format(amount, name_ru))
+
                 print('t_id - {} | amount - {}'.format(message.from_user.id, amount))
 
             except Exception:
