@@ -12,18 +12,18 @@ from contextlib import closing
 
 bot = telebot.TeleBot(config.TOKEN)
 amount = 0
-dbhost='ec2-34-198-243-120.compute-1.amazonaws.com',
-dbuser='yrxxtoynomwkrz',
-dbpassword='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
-namedb='df9nfputb06mls'
+database = config.dbname
+host_db = config.host
+user_db = config.user
+password_db = config.password
 
 @bot.message_handler(commands=["start"])
 def welcome(message):
     with closing(psycopg2.connect(
-            host=dbhost,
-            user=dbuser,
-            password=dbpassword,
-            dbname=namedb
+            host=host_db,
+            user=user_db,
+            password=password_db,
+            dbname=database
             )) as connection:
         with connection.cursor() as cursor:
             sti = open('static/welcome.webp', 'rb')
