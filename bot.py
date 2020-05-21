@@ -10,12 +10,12 @@ import config
 from telebot import types
 from datetime import datetime
 from contextlib import closing
-from commands.command import *
+from commands.command import ComandType
 
 bot = telebot.TeleBot(config.TOKEN)
 amount = 0
 
-
+print(ComandType)
 
 @bot.message_handler(commands=["start"])
 def welcome(message):
