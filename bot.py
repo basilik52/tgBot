@@ -22,9 +22,10 @@ connection = psycopg2.connect(
             password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
             dbname='df9nfputb06mls')
 
+cursor = connection.cursor()
+
 @bot.message_handler(commands=["start"])
 def welcome(message):
-        cursor = connection.cursor()
         sti = open('static/welcome.webp', 'rb')
         bot.send_sticker(message.chat.id, sti)
         # keyboard
@@ -58,7 +59,7 @@ def welcome(message):
                 str(date_start)))
         else:
             print("user - {} exist".format(user_id))
-        connection.commit()
+connection.commit()
 connection.close()
 
 @bot.message_handler(commands=["delete"])
