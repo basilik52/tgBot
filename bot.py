@@ -114,27 +114,28 @@ def lalala(message):
                         id_user = user_id[0]
                     date_delete = datetime.now()
 
+                    query1 = '''DELETE FROM amounts WHERE amount is null and user_id = %s'''
+                    cursor.execute(query1, [int(id_user)])
+
                     print(id_user, date_delete)
-                    query = '''SELECT max(id) from amounts where user_id = %s '''
+                    query = '''SELECT max(id) from amounts where user_id = %s and (date(created_at) = current_date)'''
                     cursor.execute(query, [int(id_user)])
                     for max_id in cursor:
                         id_max = max_id[0]
                         print(max_id[0])
                     print(max_id)
-                    query = '''SELECT deleted_at from amounts where user_id = %s and id = (select max(id) from amounts where user_id = %s)'''
-                    cursor.execute(query, (int(id_user), int(id_user)))
 
-                    for d_l in cursor:
-                        del_last = d_l[0]
-                        print(del_last)
                     try:
-                        if del_last is None:
-                            query = '''UPDATE amounts SET deleted_at = %s, updated_at = %s where user_id = %s and id = %s'''
-                            cursor.execute(query, (
-                                str(date_delete), str(date_delete), int(id_user), int(id_max)))
-                            bot.send_message(message.chat.id, 'Последняя сумма была успешно удалена!')
-                        else:
-                            bot.send_message(message.chat.id, 'Сумма уже удалена.')
+                        query = '''DELETE FROM amounts WHERE user_id = %s and id = %s'''
+                        cursor.execute(query, (int(id_user), int(id_max)))
+                        bot.send_message(message.chat.id, 'Последняя сумма была успешно удалена!')
+
+                        query = '''SELECT date(created_at), amount from amounts where user_id = %s and (date(created_at) = current_date)'''
+                        cursor.execute(query, [int(id_user)])
+                        for date_amount in cursor:
+                            date_c = date_amount[0]
+                            amount_a = date_amount[1]
+                            bot.send_message(message.chat.id, '{} - {} руб.'.format(date_c, amount_a))
                     except Exception:
                         bot.send_message(message.chat.id, 'Нет данных для удаления.')
                 connection.commit()
