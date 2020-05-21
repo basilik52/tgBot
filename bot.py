@@ -59,32 +59,19 @@ def welcome(message):
                 str(date_start)))
         else:
             print("user - {} exist".format(user_id))
-connection.commit()
+
 
 @bot.message_handler(commands=["delete"])
 def delete(message):
-    with closing(psycopg2.connect(
-            host='ec2-54-86-170-8.compute-1.amazonaws.com',
-            user='xblukmphspyoak',
-            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-            dbname='d2iaoufpucitsq')) as connection:
-        with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
                 bot.send_message(message.chat.id, '1 - /messages_delete\n2 - /amounts_delete')
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
-        connection.commit()
 
 
 @bot.message_handler(commands=["messages_delete"])
 def messages_delete(message):
-    with closing(psycopg2.connect(
-            host='ec2-54-86-170-8.compute-1.amazonaws.com',
-            user='xblukmphspyoak',
-            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-            dbname='d2iaoufpucitsq')) as connection:
-        with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
                 try:
@@ -96,17 +83,10 @@ def messages_delete(message):
                     bot.send_message(message.chat.id, 'Нет данных для удаления.')
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
-        connection.commit()
-
 
 @bot.message_handler(commands=["amounts_delete"])
 def amounts_delete(message):
-    with closing(psycopg2.connect(
-            host='ec2-54-86-170-8.compute-1.amazonaws.com',
-            user='xblukmphspyoak',
-            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-            dbname='d2iaoufpucitsq')) as connection:
-        with connection.cursor() as cursor:
+
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
                 try:
@@ -118,7 +98,8 @@ def amounts_delete(message):
                     bot.send_message(message.chat.id, 'Нет данных для удаления.')
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
-        connection.commit()
+
+connection.commit()
 
 
 @bot.message_handler(commands=["user"])
