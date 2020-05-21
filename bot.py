@@ -12,10 +12,7 @@ from contextlib import closing
 
 bot = telebot.TeleBot(config.TOKEN)
 amount = 0
-# dbhost='ec2-34-198-243-120.compute-1.amazonaws.com',
-# dbuser='yrxxtoynomwkrz',
-# dbpassword='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
-# namedb='df9nfputb06mls'
+
 connection = psycopg2.connect(
             host='ec2-34-198-243-120.compute-1.amazonaws.com',
             user='yrxxtoynomwkrz',
@@ -53,6 +50,7 @@ def welcome(message):
         cursor.execute(check_user, [int(user_id)])
         row = cursor.fetchone()
         if row is None:
+            cursor1 = connection.cursor()
             query = '''INSERT INTO users (id_telegram, first_name, last_name, username, language_code, created_at, updated_at) VALUES (%s,%s,%s,%s,%s,%s,%s)'''
             cursor.execute(query, (
                 int(user_id), str(first_name), str(last_name), str(username), str(language_code), str(date_start),
