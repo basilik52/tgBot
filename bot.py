@@ -272,7 +272,7 @@ def get_amount(message):
                 from amounts a join categories c on a.category_id = c.id
                 where a.user_id = %s and a.category_id is not null 
                 and a.id = (select max(id) from amounts where user_id = %s and category_id is not null)'''
-                cursor.execute(serch_user_category, (int(id_user), int(id_user)))
+                cursor.execute(category_name, (int(id_user), int(id_user)))
                 for name_c in cursor:
                     name_ru = name_c[0]
 
