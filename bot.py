@@ -210,13 +210,16 @@ def get_category(message):
                 cursor.execute(check_user, [int(id_telegram)])
                 for user_id in cursor:
                     id_user = user_id[0]
-
+                    print(id_user)
+                print(id_user)
                 category = message.text
+                print(category)
                 check_category = '''SELECT id FROM categories WHERE name = %s'''
                 cursor.execute(check_category, str(category))
                 for check_c in cursor:
                     check_category = check_c[0]
-
+                    print(check_category)
+                print(check_category)
                 date_start = datetime.now()
 
                 query = '''INSERT INTO amounts (user_id, category_id, created_at, updated_at) VALUES (%s,%s,%s,%s)'''
@@ -225,6 +228,7 @@ def get_category(message):
 
                 mag = bot.send_message(message.chat.id, 'Введите сумму <b>без</b> копеек:', parse_mode='html')
                 bot.register_next_step_handler(mag, get_amount)
+
             except Exception:
                 msg = bot.send_message(message.chat.id,
                                        'Упс.. <b>Попробуйте снова.</b>',
