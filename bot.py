@@ -202,9 +202,6 @@ def get_category(message):
             dbname='df9nfputb06mls')) as connection:
         with connection.cursor() as cursor:
             try:
-                # categoryId = '''SELECT id FROM categories WHERE name_translate = %s'''
-                # cursor.execute(categoryId, str(call.data))
-
                 id_telegram = message.from_user.id
                 check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
                 cursor.execute(check_user, [int(id_telegram)])
@@ -214,7 +211,7 @@ def get_category(message):
                 print(id_user)
                 category = message.text
                 print(category)
-                check_category = '''SELECT id FROM categories WHERE name = %s'''
+                check_category = '''SELECT id FROM categories WHERE name = '%s' '''
                 cursor.execute(check_category, str(category))
                 for check_c in cursor:
                     check_categ = check_c[0]
