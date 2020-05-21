@@ -99,33 +99,18 @@ def amounts_delete(message):
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
 
-connection.commit()
-
 
 @bot.message_handler(commands=["user"])
 def user(message):
-    with closing(psycopg2.connect(
-            host='ec2-54-86-170-8.compute-1.amazonaws.com',
-            user='xblukmphspyoak',
-            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-            dbname='d2iaoufpucitsq')) as connection:
-        with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
                 bot.send_message(message.chat.id, '1 - /users_count\n2 - /users_username')
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
-        connection.commit()
 
 
 @bot.message_handler(commands=["users_count"])
 def users_count(message):
-    with closing(psycopg2.connect(
-            host='ec2-54-86-170-8.compute-1.amazonaws.com',
-            user='xblukmphspyoak',
-            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-            dbname='d2iaoufpucitsq')) as connection:
-        with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
                 query = '''SELECT count(id) from users'''
@@ -136,17 +121,10 @@ def users_count(message):
                                  parse_mode='html')
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
-        connection.commit()
 
 
 @bot.message_handler(commands=["users_username"])
 def users_username(message):
-    with closing(psycopg2.connect(
-            host='ec2-54-86-170-8.compute-1.amazonaws.com',
-            user='xblukmphspyoak',
-            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-            dbname='d2iaoufpucitsq')) as connection:
-        with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             if id_telegram == 1017018910:
                 query2 = '''SELECT username from users'''
@@ -157,7 +135,6 @@ def users_username(message):
                                      parse_mode='html')
             else:
                 bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
-        connection.commit()
 
 
 @bot.message_handler(content_types=['text'])
@@ -274,12 +251,6 @@ def lalala(message):
 
 
 def get_message(message):
-    with closing(psycopg2.connect(
-            host='ec2-54-86-170-8.compute-1.amazonaws.com',
-            user='xblukmphspyoak',
-            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-            dbname='d2iaoufpucitsq')) as connection:
-        with connection.cursor() as cursor:
             id_telegram = message.from_user.id
             check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
             cursor.execute(check_user, [int(id_telegram)])
@@ -300,16 +271,8 @@ def get_message(message):
                 bot.send_message(message.chat.id, 'Слишком длинное сообщение :(',
                                  parse_mode='html')
 
-        connection.commit()
-
 
 def get_amount(message):
-    with closing(psycopg2.connect(
-            host='ec2-54-86-170-8.compute-1.amazonaws.com',
-            user='xblukmphspyoak',
-            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-            dbname='d2iaoufpucitsq')) as connection:
-        with connection.cursor() as cursor:
             try:
                 # categoryId = '''SELECT id FROM categories WHERE name_translate = %s'''
                 # cursor.execute(categoryId, str(call.data))
@@ -337,17 +300,10 @@ def get_amount(message):
                                        'Упс.. Должно быть целое числовое значение. <b>Попробуйте снова.</b>',
                                        parse_mode='html')
                 # bot.register_next_step_handler(msg, get_amount)
-        connection.commit()
 
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
-    with closing(psycopg2.connect(
-            host='ec2-54-86-170-8.compute-1.amazonaws.com',
-            user='xblukmphspyoak',
-            password='eb7d8b9e12313c121ad00651d0cd6791473381105d9a04c3116e5aaf1356bd6f',
-            dbname='d2iaoufpucitsq')) as connection:
-        with connection.cursor() as cursor:
             try:
 
                 if call.message:
@@ -421,7 +377,7 @@ def callback_inline(call):
                                           reply_markup=None)
             except Exception as e:
                 print(repr(e))
-        connection.commit()
+connection.commit()
 
 
 # RUN
