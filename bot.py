@@ -57,14 +57,33 @@ def lalala(message):
             bot.send_message(message.chat.id, 'Бот написан на python3. \nversion <b>3.7</b> (21.05.2020)',
                              parse_mode='html')
         elif message.text == u'Добавить сумму':
-            mag = bot.send_message(message.chat.id,
-                                   '<b>Выбери категорию:</b>\nАвтомобиль - /auto\nВсе для дома - /house\nЗдоровье и красота - '
-                                   '/beauty\nИскусство - /art\nКоммунальные платежи - /communal\nСвязь и интернет - /internet\n'
-                                   'Образование - /education\nОдежда и аксессуары - /clothes\nОтдых и развлечения - /entertainment\n'
-                                   'Перевод - /transfer\nКредит - /credit\nПутешествия - /travel\nРестораны и кафе - /cafe\nСупермаркет'
-                                   ' - /supermarket\nТранспорт - /transport\nПрочие расходы - /other', parse_mode='html')
+            with closing(psycopg2.connect(
+                    host='ec2-34-198-243-120.compute-1.amazonaws.com',
+                    user='yrxxtoynomwkrz',
+                    password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
+                    dbname='df9nfputb06mls')) as connection:
 
-            bot.register_next_step_handler(mag, get_category)
+                with connection.cursor() as cursor:
+                    id_telegram = message.from_user.id
+                    check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
+                    cursor.execute(check_user, [int(id_telegram)])
+                    for user_id in cursor:
+                        id_user = user_id[0]
+
+                    try:
+                        query = '''DELETE FROM amounts WHERE amount is null and user_id = %s'''
+                        cursor.execute(query, [int(id_user)])
+                    except Exception as e:
+                        print(repr(e))
+                connection.commit()
+                mag = bot.send_message(message.chat.id,
+                                       '<b>Выбери категорию:</b>\nАвтомобиль - /auto\nВсе для дома - /house\nЗдоровье и красота - '
+                                       '/beauty\nИскусство - /art\nКоммунальные платежи - /communal\nСвязь и интернет - /internet\n'
+                                       'Образование - /education\nОдежда и аксессуары - /clothes\nОтдых и развлечения - /entertainment\n'
+                                       'Перевод - /transfer\nКредит - /credit\nПутешествия - /travel\nРестораны и кафе - /cafe\nСупермаркет'
+                                       ' - /supermarket\nТранспорт - /transport\nПрочие расходы - /other', parse_mode='html')
+
+                bot.register_next_step_handler(mag, get_category)
 
         elif message.text == u'Статистика трат':
 
