@@ -212,7 +212,7 @@ def get_category(message):
                 category = message.text
                 print(category)
                 check_category = '''SELECT id FROM categories WHERE name = %s'''
-                cursor.execute(check_category, str(category))
+                cursor.execute(check_category, str(category,))
                 for check_c in cursor:
                     check_categ = check_c[0]
                     print(check_categ)
