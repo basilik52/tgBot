@@ -23,8 +23,8 @@ def welcome(message):
             host=dbhost,
             user=dbuser,
             password=dbpassword,
-            dbname=namedb,
-            port='5432')) as connection:
+            dbname=namedb
+            )) as connection:
         with connection.cursor() as cursor:
             sti = open('static/welcome.webp', 'rb')
             bot.send_sticker(message.chat.id, sti)
