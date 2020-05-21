@@ -5,22 +5,17 @@ import telebot
 from psycopg2.extras import DictCursor
 
 import config
-import commands.comand
+
 
 from telebot import types
 from datetime import datetime
 from contextlib import closing
-# from commands.comand import ComandType
+from commands.command import *
 
 bot = telebot.TeleBot(config.TOKEN)
 amount = 0
 
-commands.comand.ComandType.delete()
-commands.comand.ComandType.messages_delete()
-commands.comand.ComandType.amounts_delete()
-commands.comand.ComandType.user()
-commands.comand.ComandType.users_count()
-commands.comand.ComandType.users_username()
+
 
 @bot.message_handler(commands=["start"])
 def welcome(message):
