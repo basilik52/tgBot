@@ -65,7 +65,7 @@ def delete(message):
     if id_telegram == 1017018910:
         bot.send_message(message.chat.id, '1 - /messages_delete\n2 - /amounts_delete')
     else:
-        bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+        bot.send_message(message.chat.id, 'Я тебя не совсем понял 🙃\nНажми нужную кнопку меню.')
 
 
 @bot.message_handler(commands=["messages_delete"])
@@ -86,7 +86,7 @@ def messages_delete(message):
                 except Exception:
                     bot.send_message(message.chat.id, 'Нет данных для удаления.')
             else:
-                bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+                bot.send_message(message.chat.id, 'Я тебя не совсем понял 🙃\nНажми нужную кнопку меню.')
         connection.commit()
 
 
@@ -108,7 +108,7 @@ def amounts_delete(message):
                 except Exception:
                     bot.send_message(message.chat.id, 'Нет данных для удаления.')
             else:
-                bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+                bot.send_message(message.chat.id, 'Я тебя не совсем понял 🙃\nНажми нужную кнопку меню.')
         connection.commit()
 
 
@@ -118,7 +118,7 @@ def user(message):
     if id_telegram == 1017018910:
         bot.send_message(message.chat.id, '1 - /users_count\n2 - /users_username')
     else:
-        bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+        bot.send_message(message.chat.id, 'Я тебя не совсем понял 🙃\nНажми нужную кнопку меню.')
 
 
 @bot.message_handler(commands=["users_count"])
@@ -138,7 +138,7 @@ def users_count(message):
                 bot.send_message(message.chat.id, '<b>{}</b> - пользователей'.format(users_count),
                                  parse_mode='html')
             else:
-                bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+                bot.send_message(message.chat.id, 'Я тебя не совсем понял 🙃\nНажми нужную кнопку меню.')
         connection.commit()
 
 
@@ -159,5 +159,5 @@ def users_username(message):
                     bot.send_message(message.chat.id, '@{}\n'.format(users_username),
                                      parse_mode='html')
             else:
-                bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+                bot.send_message(message.chat.id, 'Я тебя не совсем понял 🙃\nНажми нужную кнопку меню.')
         connection.commit()

@@ -162,7 +162,7 @@ def lalala(message):
                         bot.register_next_step_handler(mag, get_message)
                 connection.commit()
         else:
-            bot.send_message(message.chat.id, 'Я не знаю что ответить 😢')
+            bot.send_message(message.chat.id, 'Я тебя не совсем понял 🙃\nНажми нужную кнопку меню.')
 
 
 def get_message(message):
@@ -230,7 +230,7 @@ def get_category(message):
                 msg = bot.send_message(message.chat.id,
                                        'Упс.. Нет такой категории. <b>Попробуйте снова.</b>',
                                        parse_mode='html')
-                # bot.register_next_step_handler(msg, get_amount)
+                bot.register_next_step_handler(msg, get_amount)
         connection.commit()
 
 
@@ -242,8 +242,6 @@ def get_amount(message):
             dbname='df9nfputb06mls')) as connection:
         with connection.cursor() as cursor:
             try:
-                # categoryId = '''SELECT id FROM categories WHERE name_translate = %s'''
-                # cursor.execute(categoryId, str(call.data))
                 global amount
                 id_telegram = message.from_user.id
                 check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
@@ -281,7 +279,7 @@ def get_amount(message):
                 msg = bot.send_message(message.chat.id,
                                        'Упс.. Должно быть целое числовое значение. <b>Попробуйте снова.</b>',
                                        parse_mode='html')
-                # bot.register_next_step_handler(msg, get_amount)
+                bot.register_next_step_handler(msg, get_amount)
         connection.commit()
 
 
