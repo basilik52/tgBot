@@ -230,7 +230,7 @@ def get_category(message):
                 msg = bot.send_message(message.chat.id,
                                        'Упс.. Нет такой категории. <b>Попробуйте снова.</b>',
                                        parse_mode='html')
-                bot.register_next_step_handler(msg, get_amount)
+                bot.register_next_step_handler(msg, get_category)
         connection.commit()
 
 
