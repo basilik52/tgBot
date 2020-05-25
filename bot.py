@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import cmd
 import datetime
 import psycopg2
 import telebot
@@ -279,11 +278,10 @@ def get_amount(message):
                 print('t_id - {} | amount - {}'.format(message.from_user.id, amount))
 
             except Exception:
-                # msg = bot.send_message(message.chat.id,
-                #                        'Упс.. Должно быть целое числовое значение. <b>Попробуйте снова.</b>',
-                #                        parse_mode='html')
-                # # bot.register_next_step_handler(msg, get_amount)
-                bot.answer_callback_query(callback_query_id=cmd.id, text="Введите сумму", show_alert=True)
+                msg = bot.send_message(message.chat.id,
+                                       'Упс.. Должно быть целое числовое значение. <b>Попробуйте снова.</b>',
+                                       parse_mode='html')
+                # bot.register_next_step_handler(msg, get_amount)
         connection.commit()
 
 
