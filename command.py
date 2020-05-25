@@ -30,8 +30,11 @@ def welcome(message):
             item3 = types.KeyboardButton("Реклама/отзыв")
             item4 = types.KeyboardButton("Статистика трат")
             item5 = types.KeyboardButton("О боте")
+            id_telegram = message.from_user.id
+            if id_telegram == 1017018910:
+                item6 = types.KeyboardButton("Админу")
 
-            markup.add(item1, item2, item3, item4, item5)
+            markup.add(item1, item2, item3, item4, item5, item6)
             bot.send_message(message.chat.id,
                              "Добро пожаловать, {0.first_name}!\nЯ - <b>{1.first_name}</b>, бот созданный чтобы помочь тебе узнать свои траты за определенное время..".format(
                                  message.from_user, bot.get_me()),
