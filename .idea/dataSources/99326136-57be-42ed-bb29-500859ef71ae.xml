@@ -884,17 +884,22 @@
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="260" parent="230" name="id_telegram">
+    <column id="260" parent="230" name="role_id">
+      <Position>10</Position>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="261" parent="230" name="id_telegram">
       <ColNames>id_telegram</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="261" parent="230" name="PRIMARY">
+    <key id="262" parent="230" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="262" parent="230" name="id_telegram">
+    <key id="263" parent="230" name="id_telegram">
       <ColNames>id_telegram</ColNames>
       <UnderlyingIndexName>id_telegram</UnderlyingIndexName>
     </key>

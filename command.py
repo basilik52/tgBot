@@ -26,15 +26,22 @@ def welcome(message):
             # keyboard
             markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
             item1 = types.KeyboardButton("Удалить сумму")
+            markup.add(item1)
             item2 = types.KeyboardButton("Добавить сумму")
-            item3 = types.KeyboardButton("Реклама/отзыв")
+            markup.add(item2)
+            item3 = types.KeyboardButton("Обратная связь")
+            markup.add(item3)
             item4 = types.KeyboardButton("Статистика трат")
+            markup.add(item4)
             item5 = types.KeyboardButton("О боте")
-            # id_telegram = message.from_user.id
-            # if id_telegram == 1017018910:
-            #     item6 = types.KeyboardButton("Админу")
+            markup.add(item5)
+            check_role = '''SELECT roles.name FROM users JOIN roles on users.role_id = roles.id WHERE users.id_telegram = %s'''
+            cursor.execute(check_role, [int(message.from_user.id)])
+            row1 = cursor.fetchone()
+            if row1 == 'administrator':
+                item6 = types.KeyboardButton("Admin")
+                markup.add(item6)
 
-            markup.add(item1, item2, item3, item4, item5)
             bot.send_message(message.chat.id,
                              "Добро пожаловать, {0.first_name}!\nЯ - <b>{1.first_name}</b>, бот созданный чтобы помочь тебе узнать свои траты за определенное время..".format(
                                  message.from_user, bot.get_me()),
@@ -44,6 +51,7 @@ def welcome(message):
             first_name = message.from_user.first_name
             last_name = message.from_user.last_name
             username = message.from_user.username
+            role = 10
             language_code = message.from_user.language_code
             date_start = datetime.now()
             print(user_id, first_name, last_name, username, language_code, date_start)
@@ -51,13 +59,15 @@ def welcome(message):
             cursor.execute(check_user, [int(user_id)])
             row = cursor.fetchone()
             if row is None:
-                query = '''INSERT INTO users (id_telegram, first_name, last_name, username, language_code, created_at, updated_at) VALUES (%s,%s,%s,%s,%s,%s,%s)'''
+                query = '''INSERT INTO users (id_telegram, first_name, last_name, username, role_id, language_code, created_at, updated_at) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)'''
                 cursor.execute(query, (
-                    int(user_id), str(first_name), str(last_name), str(username), str(language_code), str(date_start),
+                    int(user_id), str(first_name), str(last_name), str(username), int(role), str(language_code),
+                    str(date_start),
                     str(date_start)))
             else:
                 print("user - {} exist".format(user_id))
         connection.commit()
+
 
 @bot.message_handler(commands=["delete"])
 def delete(message):

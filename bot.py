@@ -53,7 +53,7 @@ def commands(message):
 @bot.message_handler(content_types=['text'])
 def lalala(message):
     if message.chat.type == 'private':
-        if message.text == u'О боте':
+        if message.text == u'Обратная связь':
             bot.send_message(message.chat.id, 'Бот написан на python3. \nversion <b>3.7</b> (21.05.2020)',
                              parse_mode='html')
         elif message.text == u'Добавить сумму':
@@ -64,9 +64,9 @@ def lalala(message):
                     dbname='df9nfputb06mls')) as connection:
 
                 with connection.cursor() as cursor:
-                    id_telegram = message.from_user.id
+                    # id_telegram = message.from_user.id
                     check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
-                    cursor.execute(check_user, [int(id_telegram)])
+                    cursor.execute(check_user, [int(message.from_user.id)])
                     for user_id in cursor:
                         id_user = user_id[0]
 
@@ -81,7 +81,8 @@ def lalala(message):
                                        '/beauty\nИскусство - /art\nКоммунальные платежи - /communal\nСвязь и интернет - /internet\n'
                                        'Образование - /education\nОдежда и аксессуары - /clothes\nОтдых и развлечения - /entertainment\n'
                                        'Перевод - /transfer\nКредит - /credit\nПутешествия - /travel\nРестораны и кафе - /cafe\nСупермаркет'
-                                       ' - /supermarket\nТранспорт - /transport\nПрочие расходы - /other', parse_mode='html')
+                                       ' - /supermarket\nТранспорт - /transport\nПрочие расходы - /other',
+                                       parse_mode='html')
 
                 bot.register_next_step_handler(mag, get_category)
 
@@ -107,11 +108,12 @@ def lalala(message):
                     dbname='df9nfputb06mls')) as connection:
 
                 with connection.cursor() as cursor:
-                    id_telegram = message.from_user.id
+                    # id_telegram = message.from_user.id
                     check_user = '''SELECT id FROM users WHERE id_telegram = %s'''
-                    cursor.execute(check_user, [int(id_telegram)])
+                    cursor.execute(check_user, [int(message.from_user.id)])
                     for user_id in cursor:
                         id_user = user_id[0]
+
                     date_delete = datetime.now()
 
                     query1 = '''DELETE FROM amounts WHERE amount is null and user_id = %s'''
@@ -329,7 +331,7 @@ def callback_inline(call):
                             for am_we in cursor:
                                 amo_week = am_we[0]
                                 n_week = am_we[1]
-                                bot.send_message(call.message.chat.id, "- {} руб. - {}".format(amo_week,n_week))
+                                bot.send_message(call.message.chat.id, "- {} руб. - {}".format(amo_week, n_week))
                         else:
                             bot.send_message(call.message.chat.id, "За неделю - 0 руб.")
                     elif call.data == 'month':
