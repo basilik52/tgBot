@@ -53,7 +53,7 @@ def commands(message):
 @bot.message_handler(content_types=['text'])
 def lalala(message):
     if message.chat.type == 'private':
-        if message.text == u'Обратная связь':
+        if message.text == u'О боте':
             bot.send_message(message.chat.id, 'Бот написан на python3. \nversion <b>3.7</b> (21.05.2020)',
                              parse_mode='html')
         elif message.text == u'Добавить сумму':
@@ -141,7 +141,7 @@ def lalala(message):
                     except Exception:
                         bot.send_message(message.chat.id, 'Нет данных для удаления.')
                 connection.commit()
-        elif message.text == u'Реклама/отзыв':
+        elif message.text == u'Обратная связь':
             with closing(psycopg2.connect(
                     host='ec2-34-198-243-120.compute-1.amazonaws.com',
                     user='yrxxtoynomwkrz',

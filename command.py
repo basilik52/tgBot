@@ -26,22 +26,18 @@ def welcome(message):
             # keyboard
             markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
             item1 = types.KeyboardButton("Удалить сумму")
-            markup.add(item1)
             item2 = types.KeyboardButton("Добавить сумму")
-            markup.add(item2)
             item3 = types.KeyboardButton("Обратная связь")
-            markup.add(item3)
             item4 = types.KeyboardButton("Статистика трат")
-            markup.add(item4)
             item5 = types.KeyboardButton("О боте")
-            markup.add(item5)
             check_role = '''SELECT roles.name FROM users JOIN roles on users.role_id = roles.id WHERE users.id_telegram = %s'''
             cursor.execute(check_role, [int(message.from_user.id)])
             row1 = cursor.fetchone()
+            print(row1)
             if row1 == 'administrator':
                 item6 = types.KeyboardButton("Admin")
-                markup.add(item6)
 
+            markup.add(item1, item2, item3, item4, item5, item6)
             bot.send_message(message.chat.id,
                              "Добро пожаловать, {0.first_name}!\nЯ - <b>{1.first_name}</b>, бот созданный чтобы помочь тебе узнать свои траты за определенное время..".format(
                                  message.from_user, bot.get_me()),
