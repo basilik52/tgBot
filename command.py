@@ -27,7 +27,7 @@ def welcome(message):
             markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
             item1 = types.KeyboardButton("Удалить сумму")
             item2 = types.KeyboardButton("Добавить сумму")
-            item3 = types.KeyboardButton("Реклама/отзыв")
+            item3 = types.KeyboardButton("Обратная связь")
             item4 = types.KeyboardButton("Статистика трат")
             item5 = types.KeyboardButton("О боте")
             # id_telegram = message.from_user.id
