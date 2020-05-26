@@ -27,17 +27,14 @@ def welcome(message):
             markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
             item1 = types.KeyboardButton("Удалить сумму")
             item2 = types.KeyboardButton("Добавить сумму")
-            item3 = types.KeyboardButton("Обратная связь")
+            item3 = types.KeyboardButton("Реклама/отзыв")
             item4 = types.KeyboardButton("Статистика трат")
             item5 = types.KeyboardButton("О боте")
-            check_role = '''SELECT roles.name FROM users JOIN roles on users.role_id = roles.id WHERE users.id_telegram = %s'''
-            cursor.execute(check_role, [int(message.from_user.id)])
-            row1 = cursor.fetchone()
-            print(row1)
-            if row1 == 'administrator':
-                item6 = types.KeyboardButton("Admin")
+            # id_telegram = message.from_user.id
+            # if id_telegram == 1017018910:
+            #     item6 = types.KeyboardButton("Админу")
 
-            markup.add(item1, item2, item3, item4, item5, item6)
+            markup.add(item1, item2, item3, item4, item5)
             bot.send_message(message.chat.id,
                              "Добро пожаловать, {0.first_name}!\nЯ - <b>{1.first_name}</b>, бот созданный чтобы помочь тебе узнать свои траты за определенное время..".format(
                                  message.from_user, bot.get_me()),
@@ -57,13 +54,11 @@ def welcome(message):
             if row is None:
                 query = '''INSERT INTO users (id_telegram, first_name, last_name, username, role_id, language_code, created_at, updated_at) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)'''
                 cursor.execute(query, (
-                    int(user_id), str(first_name), str(last_name), str(username), int(role), str(language_code),
-                    str(date_start),
+                    int(user_id), str(first_name), str(last_name), str(username), int(role), str(language_code), str(date_start),
                     str(date_start)))
             else:
                 print("user - {} exist".format(user_id))
         connection.commit()
-
 
 @bot.message_handler(commands=["delete"])
 def delete(message):
