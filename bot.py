@@ -17,12 +17,19 @@ def buttons(message):
     get_buttons(message)
 
 
+def messages(message):
+    get_message(message)
+
+
+def categories(message):
+    get_category(message)
+
+
 @bot.callback_query_handler(func=lambda call: True)
 def admin(call):
     callback_inline_admin(call)
 
 
-@bot.callback_query_handler(func=lambda call: True)
 def statistic(call):
     callback_inline(call)
 

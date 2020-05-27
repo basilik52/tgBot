@@ -9,11 +9,7 @@ from contextlib import closing
 from telebot import types
 from datetime import datetime
 
-
-
 bot = telebot.TeleBot(config.TOKEN)
-
-
 
 
 @bot.message_handler(content_types=['text'])
@@ -153,7 +149,6 @@ def get_buttons(message):
                 connection.commit()
         else:
             bot.send_message(message.chat.id, 'Я тебя не совсем понял 🙃\nНажми нужную кнопку меню.')
-
 
 
 def get_message(message):
