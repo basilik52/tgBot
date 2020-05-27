@@ -8,14 +8,9 @@ import config
 from contextlib import closing
 from telebot import types
 from datetime import datetime
-from get_button import *
+
 
 bot = telebot.TeleBot(config.TOKEN)
-
-
-@bot.message_handler(content_types=['text'])
-def buttons(message):
-    get_buttons(message)
 
 
 @bot.message_handler(commands=["start"])
