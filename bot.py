@@ -23,36 +23,6 @@ def commands(message):
     welcome(message)
 
 
-@bot.message_handler(commands=["delete"])
-def commands(message):
-    delete(message)
-
-
-@bot.message_handler(commands=["messages_delete"])
-def commands(message):
-    messages_delete(message)
-
-
-@bot.message_handler(commands=["amounts_delete"])
-def commands(message):
-    amounts_delete(message)
-
-
-@bot.message_handler(commands=["user"])
-def commands(message):
-    user(message)
-
-
-@bot.message_handler(commands=["users_count"])
-def commands(message):
-    users_count(message)
-
-
-@bot.message_handler(commands=["users_username"])
-def commands(message):
-    users_username(message)
-
-
 @bot.message_handler(content_types=['text'])
 def buttons(message):
     get_buttons(message)

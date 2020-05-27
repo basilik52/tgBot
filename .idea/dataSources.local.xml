@@ -16,7 +16,7 @@
       </schema-mapping>
     </data-source>
     <data-source name="Pybot" uuid="c32b725d-ef6e-44f6-8d88-13c3a0add789">
-      <database-info product="PostgreSQL" version="12.2 (Ubuntu 12.2-2.pgdg16.04+1)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.5" dbms="POSTGRES" exact-version="12.2">
+      <database-info product="PostgreSQL" version="12.3 (Ubuntu 12.3-1.pgdg16.04+1)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.5" dbms="POSTGRES" exact-version="12.3" exact-driver-version="42.2">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
@@ -28,9 +28,7 @@
             <node kind="database" qname="@">
               <node kind="schema" qname="@" />
             </node>
-            <node kind="database" qname="df9nfputb06mls">
-              <node kind="schema" qname="public" />
-            </node>
+            <node kind="database" qname="d4297is9vufqhn" />
           </node>
         </introspection-scope>
       </schema-mapping>
