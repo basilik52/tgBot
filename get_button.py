@@ -34,6 +34,7 @@ def get_buttons(message):
                         item3 = types.InlineKeyboardButton("Users count", callback_data='u_count')
                         item4 = types.InlineKeyboardButton("Users username", callback_data='u_username')
                         markup_admin.add(item1, item2, item3, item4)
+                        bot.send_message(message.chat.id, 'Меню администратора', reply_markup=markup_admin)
                 connection.commit()
         elif message.text == u'Добавить сумму':
             with closing(psycopg2.connect(
