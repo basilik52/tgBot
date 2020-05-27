@@ -11,7 +11,7 @@
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://ec2-34-198-243-120.compute-1.amazonaws.com:5432/df9nfputb06mls</jdbc-url>
+      <jdbc-url>jdbc:postgresql://ec2-34-202-88-122.compute-1.amazonaws.com:5432/daro9jorij2fqh</jdbc-url>
     </data-source>
   </component>
 </project>

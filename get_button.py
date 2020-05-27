@@ -19,10 +19,10 @@ def get_buttons(message):
             bot.send_message(message.chat.id, 'Бот написан на python3. \nversion <b>3.7</b> (21.05.2020)',
                              parse_mode='html')
             with closing(psycopg2.connect(
-                    host='ec2-34-198-243-120.compute-1.amazonaws.com',
-                    user='yrxxtoynomwkrz',
-                    password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
-                    dbname='df9nfputb06mls')) as connection:
+                    host='ec2-34-202-88-122.compute-1.amazonaws.com',
+                    user='psfxklbqjdysjc',
+                    password='eaf1f4c9415008833090228825842986dcac8e6e269b1c9d430b7814a5f9ea97',
+                    dbname='daro9jorij2fqh')) as connection:
                 with connection.cursor() as cursor:
                     check_role = '''SELECT role_id FROM users WHERE id_telegram = %s'''
                     cursor.execute(check_role, [int(message.from_user.id)])
@@ -38,10 +38,10 @@ def get_buttons(message):
                 connection.commit()
         elif message.text == u'Добавить сумму':
             with closing(psycopg2.connect(
-                    host='ec2-34-198-243-120.compute-1.amazonaws.com',
-                    user='yrxxtoynomwkrz',
-                    password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
-                    dbname='df9nfputb06mls')) as connection:
+                    host='ec2-34-202-88-122.compute-1.amazonaws.com',
+                    user='psfxklbqjdysjc',
+                    password='eaf1f4c9415008833090228825842986dcac8e6e269b1c9d430b7814a5f9ea97',
+                    dbname='daro9jorij2fqh')) as connection:
 
                 with connection.cursor() as cursor:
                     # id_telegram = message.from_user.id
@@ -82,10 +82,10 @@ def get_buttons(message):
 
         elif message.text == u'Удалить сумму':
             with closing(psycopg2.connect(
-                    host='ec2-34-198-243-120.compute-1.amazonaws.com',
-                    user='yrxxtoynomwkrz',
-                    password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
-                    dbname='df9nfputb06mls')) as connection:
+                    host='ec2-34-202-88-122.compute-1.amazonaws.com',
+                    user='psfxklbqjdysjc',
+                    password='eaf1f4c9415008833090228825842986dcac8e6e269b1c9d430b7814a5f9ea97',
+                    dbname='daro9jorij2fqh')) as connection:
 
                 with connection.cursor() as cursor:
                     # id_telegram = message.from_user.id
@@ -123,10 +123,10 @@ def get_buttons(message):
                 connection.commit()
         elif message.text == u'Обратная связь':
             with closing(psycopg2.connect(
-                    host='ec2-34-198-243-120.compute-1.amazonaws.com',
-                    user='yrxxtoynomwkrz',
-                    password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
-                    dbname='df9nfputb06mls')) as connection:
+                    host='ec2-34-202-88-122.compute-1.amazonaws.com',
+                    user='psfxklbqjdysjc',
+                    password='eaf1f4c9415008833090228825842986dcac8e6e269b1c9d430b7814a5f9ea97',
+                    dbname='daro9jorij2fqh')) as connection:
 
                 with connection.cursor() as cursor:
                     id_telegram = message.from_user.id

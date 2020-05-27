@@ -100,10 +100,10 @@ def get_message(message):
 
 def get_category(message):
     with closing(psycopg2.connect(
-            host='ec2-34-198-243-120.compute-1.amazonaws.com',
-            user='yrxxtoynomwkrz',
-            password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
-            dbname='df9nfputb06mls')) as connection:
+            host='ec2-34-202-88-122.compute-1.amazonaws.com',
+            user='psfxklbqjdysjc',
+            password='eaf1f4c9415008833090228825842986dcac8e6e269b1c9d430b7814a5f9ea97',
+            dbname='daro9jorij2fqh')) as connection:
         with connection.cursor() as cursor:
             try:
                 id_telegram = message.from_user.id
@@ -139,10 +139,10 @@ def get_category(message):
 
 def get_amount(message):
     with closing(psycopg2.connect(
-            host='ec2-34-198-243-120.compute-1.amazonaws.com',
-            user='yrxxtoynomwkrz',
-            password='8164a0d936762b96651abde918d0c68c46739338a3f0cef7c8dd01214043b2b3',
-            dbname='df9nfputb06mls')) as connection:
+            host='ec2-34-202-88-122.compute-1.amazonaws.com',
+            user='psfxklbqjdysjc',
+            password='eaf1f4c9415008833090228825842986dcac8e6e269b1c9d430b7814a5f9ea97',
+            dbname='daro9jorij2fqh')) as connection:
         with connection.cursor() as cursor:
             try:
                 global amount
