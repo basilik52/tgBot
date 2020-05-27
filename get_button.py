@@ -8,6 +8,7 @@ import config
 from contextlib import closing
 from telebot import types
 from datetime import datetime
+from bot import *
 
 bot = telebot.TeleBot(config.TOKEN)
 
@@ -26,7 +27,8 @@ def get_buttons(message):
                 with connection.cursor() as cursor:
                     check_role = '''SELECT role_id FROM users WHERE id_telegram = %s'''
                     cursor.execute(check_role, [int(message.from_user.id)])
-                    role_id = cursor.fetchone()
+                    for role in cursor:
+                        role_id = role[0]
                     if role_id == 1:
                         markup_admin = types.InlineKeyboardMarkup(row_width=2)
                         item1 = types.InlineKeyboardButton("Messages delete", callback_data='m_delete')

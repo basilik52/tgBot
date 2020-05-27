@@ -25,7 +25,8 @@ def callback_inline_admin(call):
                 if call.message:
                     check_role = '''SELECT role_id FROM users WHERE id_telegram = %s'''
                     cursor.execute(check_role, [int(call.from_user.id)])
-                    role_id = cursor.fetchone()
+                    for role in cursor:
+                        role_id = role[0]
                     if role_id == 1:
 
                         if call.data == 'm_delete':
