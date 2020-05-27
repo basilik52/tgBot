@@ -29,13 +29,14 @@ def commands(message):
 #     get_buttons(message)
 
 
-# @bot.callback_query_handler(func=lambda call: True)
-# def admin(call):
-#     callback_inline_admin(call)
-#
-#
-# def statistic(call):
-#     callback_inline(call)
+@bot.callback_query_handler(lambda call: call.data in ["m_delete", "a_delete", "u_count", "u_username"])
+def process_callback_1(call):
+    callback_inline_admin(call)
+
+
+@bot.callback_query_handler(lambda call: call.data in ["today", "week", "month", "quarter", "half", "year"])
+def process_callback_2(call):
+    callback_inline(call)
 
 
 @bot.message_handler(content_types=['text'])
