@@ -13,6 +13,14 @@ from bot import *
 bot = telebot.TeleBot(config.TOKEN)
 
 
+def categories(message):
+    get_category(message)
+
+
+def messages(message):
+    get_message(message)
+
+
 @bot.message_handler(content_types=['text'])
 def get_buttons(message):
     if message.chat.type == 'private':
@@ -66,7 +74,7 @@ def get_buttons(message):
                                        ' - /supermarket\nТранспорт - /transport\nПрочие расходы - /other',
                                        parse_mode='html')
 
-                bot.register_next_step_handler(mag, get_category(message))
+                bot.register_next_step_handler(mag, categories)
 
         elif message.text == u'Статистика трат':
 
@@ -143,7 +151,7 @@ def get_buttons(message):
                                                'Дорогой {0.first_name}, спасибо, что пользуешься ботом  - помошником! '
                                                'В данном разделе ты можешь оставить отзыв о данном боте, заказать своевого бота на python или заказать рекламу (Оставляйте свои данные). Пиши:'.format(
                                                    message.from_user), parse_mode='html')
-                        bot.register_next_step_handler(mag, get_message(message))
+                        bot.register_next_step_handler(mag, messages)
                 connection.commit()
         else:
             bot.send_message(message.chat.id, 'Я тебя не совсем понял 🙃\nНажми нужную кнопку меню.')
