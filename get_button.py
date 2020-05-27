@@ -66,7 +66,7 @@ def get_buttons(message):
                                        ' - /supermarket\nТранспорт - /transport\nПрочие расходы - /other',
                                        parse_mode='html')
 
-                bot.register_next_step_handler(mag, get_category)
+                bot.register_next_step_handler(mag, get_category(message))
 
         elif message.text == u'Статистика трат':
 
@@ -143,7 +143,7 @@ def get_buttons(message):
                                                'Дорогой {0.first_name}, спасибо, что пользуешься ботом  - помошником! '
                                                'В данном разделе ты можешь оставить отзыв о данном боте, заказать своевого бота на python или заказать рекламу (Оставляйте свои данные). Пиши:'.format(
                                                    message.from_user), parse_mode='html')
-                        bot.register_next_step_handler(mag, get_message)
+                        bot.register_next_step_handler(mag, get_message(message))
                 connection.commit()
         else:
             bot.send_message(message.chat.id, 'Я тебя не совсем понял 🙃\nНажми нужную кнопку меню.')
