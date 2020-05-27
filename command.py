@@ -8,8 +8,14 @@ import config
 from contextlib import closing
 from telebot import types
 from datetime import datetime
+from get_button import *
 
 bot = telebot.TeleBot(config.TOKEN)
+
+
+@bot.message_handler(content_types=['text'])
+def buttons(message):
+    get_buttons(message)
 
 
 @bot.message_handler(commands=["start"])
@@ -54,7 +60,8 @@ def welcome(message):
             if row is None:
                 query = '''INSERT INTO users (id_telegram, first_name, last_name, username, role_id, language_code, created_at, updated_at) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)'''
                 cursor.execute(query, (
-                    int(user_id), str(first_name), str(last_name), str(username), int(role), str(language_code), str(date_start),
+                    int(user_id), str(first_name), str(last_name), str(username), int(role), str(language_code),
+                    str(date_start),
                     str(date_start)))
             else:
                 print("user - {} exist".format(user_id))
