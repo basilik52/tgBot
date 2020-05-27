@@ -24,6 +24,7 @@ def messages(message):
 @bot.message_handler(content_types=['text'])
 def get_buttons(message):
     if message.chat.type == 'private':
+
         if message.text == u'О боте':
             bot.send_message(message.chat.id, 'Бот написан на python3. \nversion <b>3.7</b> (21.05.2020)',
                              parse_mode='html')
@@ -37,15 +38,17 @@ def get_buttons(message):
                     cursor.execute(check_role, [int(message.from_user.id)])
                     for role in cursor:
                         role_id = role[0]
+
                     if role_id == 1:
-                        markup_admin = types.InlineKeyboardMarkup(row_width=2)
+                        markup = types.InlineKeyboardMarkup(row_width=2)
                         item1 = types.InlineKeyboardButton("Messages delete", callback_data='m_delete')
                         item2 = types.InlineKeyboardButton("Amounts delete", callback_data='a_delete')
                         item3 = types.InlineKeyboardButton("Users count", callback_data='u_count')
                         item4 = types.InlineKeyboardButton("Users username", callback_data='u_username')
-                        markup_admin.add(item1, item2, item3, item4)
-                        bot.send_message(message.chat.id, 'Меню администратора', reply_markup=markup_admin)
+                        markup.add(item1, item2, item3, item4)
+                        bot.send_message(message.chat.id, 'Меню администратора:', reply_markup=markup)
                 connection.commit()
+
         elif message.text == u'Добавить сумму':
             with closing(psycopg2.connect(
                     host='ec2-34-202-88-122.compute-1.amazonaws.com',

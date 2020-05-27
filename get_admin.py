@@ -27,8 +27,8 @@ def callback_inline_admin(call):
                     cursor.execute(check_role, [int(call.from_user.id)])
                     for role in cursor:
                         role_id = role[0]
-                    if role_id == 1:
 
+                    if role_id == 1:
                         if call.data == 'm_delete':
 
                             try:
@@ -69,14 +69,14 @@ def callback_inline_admin(call):
                                 bot.send_message(call.message.chat.id, '@{}\n'.format(users_username),
                                                  parse_mode='html')
 
+                        bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+                                              text="О боте",
+                                              reply_markup=None)
+
                     else:
                         bot.send_message(call.message.chat.id,
                                          'Я тебя не совсем понял 🙃\nНажми нужную кнопку меню.')
 
-                    # remove inline buttons
-                    bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                          text="О боте",
-                                          reply_markup=None)
             except Exception as e:
                 print(repr(e))
         connection.commit()
