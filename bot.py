@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+import datetime
+import psycopg2
+import telebot
+from psycopg2.extras import DictCursor
+
+import config
+
+from telebot import types
+from datetime import datetime
+from contextlib import closing
+
 from command import *
 # from get_button import *
 from get_statistic import *
