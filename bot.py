@@ -1,5 +1,5 @@
 from command import *
-
+from get_button import *
 from get_statistic import *
 from get_admin import *
 
@@ -12,8 +12,9 @@ def commands(message):
     welcome(message)
 
 
-
-
+@bot.message_handler(content_types=['text'])
+def buttons(message):
+    get_buttons(message)
 
 
 @bot.callback_query_handler(func=lambda call: True)
