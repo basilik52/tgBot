@@ -29,7 +29,7 @@ def commands(message):
 #     get_buttons(message)
 
 
-@bot.callback_query_handler(lambda call: call.data in ["m_delete", "a_delete", "u_count", "u_username"])
+@bot.callback_query_handler(lambda call: call.data in ["m_delete", "a_delete", "u_count", "u_username", "stat"])
 def process_callback_1(call):
     callback_inline_admin(call)
 
@@ -44,7 +44,7 @@ def get_buttons(message):
     if message.chat.type == 'private':
 
         if message.text == u'О боте':
-            bot.send_message(message.chat.id, 'Бот написан на python3. \nversion <b>3.7</b> (21.05.2020)',
+            bot.send_message(message.chat.id, 'Бот написан на python3. \nversion <b>3.9</b> (27.05.2020)',
                              parse_mode='html')
             with closing(psycopg2.connect(
                     host='ec2-34-202-88-122.compute-1.amazonaws.com',
@@ -63,7 +63,8 @@ def get_buttons(message):
                         item2 = types.InlineKeyboardButton("Amounts delete", callback_data='a_delete')
                         item3 = types.InlineKeyboardButton("Users count", callback_data='u_count')
                         item4 = types.InlineKeyboardButton("Users username", callback_data='u_username')
-                        markup.add(item1, item2, item3, item4)
+                        item5 = types.InlineKeyboardButton("Statistic", callback_data='stat')
+                        markup.add(item1, item2, item3, item4, item5)
                         bot.send_message(message.chat.id, 'Меню администратора:', reply_markup=markup)
                 connection.commit()
 
@@ -160,8 +161,12 @@ def get_buttons(message):
                     dbname='daro9jorij2fqh')) as connection:
 
                 with connection.cursor() as cursor:
-                    id_telegram = message.from_user.id
-                    if id_telegram == 1017018910:
+                    check_role = '''SELECT role_id FROM users WHERE id_telegram = %s'''
+                    cursor.execute(check_role, [int(message.from_user.id)])
+                    for role in cursor:
+                        role_id = role[0]
+
+                    if role_id == 1:
                         query = '''SELECT message from messages where checked is null and deleted_at is null'''
                         cursor.execute(query)
                         for m_c in cursor:

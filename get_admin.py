@@ -70,9 +70,64 @@ def callback_inline_admin(call):
                                 bot.send_message(call.message.chat.id, '@{}\n'.format(users_username),
                                                  parse_mode='html')
 
-                        bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                              text="О боте",
-                                              reply_markup=None)
+                        elif call.data == 'stat':
+
+                            amount_today = '''SELECT sum(amount) FROM amounts WHERE (date(created_at) = current_date) and deleted_at is null'''
+                            cursor.execute(amount_today)
+                            for am_t in cursor:
+                                am_tod = am_t[0]
+                            if am_tod is not None:
+                                bot.send_message(call.message.chat.id, "Сегодня - {} руб.".format(am_tod))
+                            else:
+                                bot.send_message(call.message.chat.id, "Сегодня - 0 руб.")
+
+                            amount_week = '''SELECT sum(amount) FROM amounts WHERE (EXTRACT(WEEK FROM created_at) = EXTRACT(WEEK FROM current_date)) and (EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM current_date)) and deleted_at is null'''
+                            cursor.execute(amount_week)
+                            for am_w in cursor:
+                                am_week = am_w[0]
+                            if am_week is not None:
+                                bot.send_message(call.message.chat.id, "За неделю - {} руб.".format(am_week))
+                            else:
+                                bot.send_message(call.message.chat.id, "За неделю - 0 руб.")
+
+                            amount_month = '''SELECT sum(amount) FROM amounts WHERE (EXTRACT(MONTH FROM created_at) = EXTRACT(MONTH FROM current_date)) and (EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM current_date)) and deleted_at is null'''
+                            cursor.execute(amount_month)
+                            for am_m in cursor:
+                                am_month = am_m[0]
+                            if am_month is not None:
+                                bot.send_message(call.message.chat.id, "За месяц - {} руб.".format(am_month))
+                            else:
+                                bot.send_message(call.message.chat.id, "За месяц - 0 руб.")
+
+                            amount_quarter = '''SELECT sum(amount) FROM amounts WHERE (EXTRACT(QUARTER FROM created_at) = EXTRACT(QUARTER FROM current_date)) and (EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM current_date)) and deleted_at is null'''
+                            cursor.execute(amount_quarter)
+                            for am_q in cursor:
+                                am_quarter = am_q[0]
+                            if am_quarter is not None:
+                                bot.send_message(call.message.chat.id, "За квартал - {} руб.".format(am_quarter))
+                            else:
+                                bot.send_message(call.message.chat.id, "За квартал - 0 руб.")
+
+                            amount_half = '''SELECT sum(amount) FROM amounts WHERE deleted_at is null and (EXTRACT(QUARTER FROM current_date) <= 2 and EXTRACT(QUARTER FROM created_at) <= 2 and (EXTRACT(QUARTER FROM created_at) <= EXTRACT(QUARTER FROM current_date)) and
+                                                                             (EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM current_date)))
+                                                                       or (EXTRACT(QUARTER FROM current_date) >= 3 and EXTRACT(QUARTER FROM created_at) >= 3 and (EXTRACT(QUARTER FROM created_at) <= EXTRACT(QUARTER FROM current_date)) and
+                                                                           (EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM current_date)))'''
+                            cursor.execute(amount_half)
+                            for am_h in cursor:
+                                am_half = am_h[0]
+                            if am_half is not None:
+                                bot.send_message(call.message.chat.id, "За полгода - {} руб.".format(am_half))
+                            else:
+                                bot.send_message(call.message.chat.id, "За полгода - 0 руб.")
+
+                            amount_year = '''SELECT sum(amount) FROM amounts WHERE (EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM current_date)) and deleted_at is null'''
+                            cursor.execute(amount_year)
+                            for am_y in cursor:
+                                am_year = am_y[0]
+                            if am_year is not None:
+                                bot.send_message(call.message.chat.id, "За год - {} руб.".format(am_year))
+                            else:
+                                bot.send_message(call.message.chat.id, "За год - 0 руб.")
 
                     else:
                         bot.send_message(call.message.chat.id,
